@@ -3,34 +3,31 @@ const functions = require('firebase-functions');
 // Used to get access to the database
 const admin = require('firebase-admin');
 admin.initializeApp();
-// const db = admin.firestore();
 
-// // Simple hello world to test the app
-exports.helloWorld = functions.https.onRequest((request, response) => {
-   functions.logger.info("Hello logs!", {structuredData: true});
-   response.send("Hello from Firebase!");
- });
+// Express to manage calls
+const express = require('express');
+const app = express();
 
-
-
- // Lists all users
- exports.getUsers = functions.https.onRequest((req, res) => {
-    admin.firestore().collection('usuarios').get()
-      .then((data) => {
-        let users = [];
-        data.forEach((doc) => {
-          users.push(doc.data());
-        });
-        
-        return res.json(users);
-      })
-      .catch(err => console.error(err));
-
- })
+// List all users
+app.get('/users', (req, res) => {
+  admin
+  .firestore()
+  .collection('usuarios')
+  .get()
+  .then((data) => {
+    let users = [];
+    data.forEach((doc) => {
+      users.push(doc.data());
+    });
+    
+    return res.json(users);
+  })
+  .catch(err => console.error(err));
+});
 
 
  // Creates a new user with a POST request. Takes input from body in JSON format.
-exports.createUser = functions.https.onRequest((req, res) => {
+app.post('/createUser', (req, res) => {
   const newUser = {
     biografia: req.body.biografia,
     edad: req.body.edad,
@@ -42,11 +39,17 @@ exports.createUser = functions.https.onRequest((req, res) => {
 
   admin.firestore().collection('usuarios').add(newUser)
   .then (doc => {
-    res.json({message: 'User created successfully'});
+     res.json({message: 'User created successfully'});
+     return res;
   })
   .catch(err => {
     res.status(500).json({error: 'Something went wrong'});
     console.error(err);
   })
 
+
 })
+
+
+// https://url.com/api/....
+exports.api = functions.https.onRequest(app);
