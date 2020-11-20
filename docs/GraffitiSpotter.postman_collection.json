@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "5a064d1d-0b24-4467-a7e0-bba0969a4c6e",
+		"name": "GraffitiSpotter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "listUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"biografia\": \"3\",\r\n    \"edad\": 234,\r\n    \"imagen\": \"123\",\r\n    \"nombre\": \"old fsdafdsafs\",\r\n    \"password\": \"p4sswfdsafs0rd\",\r\n    \"username\": \"usuariotesteo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/createUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"biografia\": \"fdsafsda\",\r\n    \"edad\": 234,\r\n    \"imagen\": \"123\",\r\n    \"nombre\": \"old fsdafdsafs\",\r\n    \"password\": \"p4sswfdsafs0rd\",\r\n    \"username\": \"tugrafitero69\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/updateUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"updateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"usuariotesteo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/deleteUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"deleteUser"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
