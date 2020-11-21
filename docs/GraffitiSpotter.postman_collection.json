@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bd870d2c-4ce6-47e3-8afa-205dddff40b5",
+		"_postman_id": "ef9c5845-3884-4831-9663-4524757e02f2",
 		"name": "GraffitiSpotter",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -127,37 +127,38 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "comment",
+			"name": "graffiti",
 			"item": [
 				{
-					"name": "listComments",
+					"name": "listGraffitis",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/comments",
-							"protocol": "https",
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/graffitis",
+							"protocol": "http",
 							"host": [
-								"us-central1-thegraffitispotter",
-								"cloudfunctions",
-								"net"
+								"localhost"
 							],
+							"port": "5000",
 							"path": [
+								"thegraffitispotter",
+								"us-central1",
 								"api",
-								"comments"
+								"graffitis"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "createComment",
+					"name": "createGraffiti",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"usuario\": \"/usuarios/tugrafitero69\",\r\n    \"graffiti\": \"/graffitis/1234\",\r\n    \"comentario\": \"Hola mundo!\"\r\n}",
+							"raw": "{\n    \"autor\": \"/usuarios/tugrafitero69\",\n    \"commentCount\": 0,\n    \"descripcion\": \"descripción test\",\n    \"estado\": \"soltero\",\n    \"fecha\": {\n        \"_seconds\": 1605482000,\n        \"_nanoseconds\": 0\n    },\n    \"imagen\": \"https://www.gstatic.com/devrel-devsite/prod/v2210075187f059b839246c2c03840474501c3c6024a99fb78f6293c1b4c0f664/firebase/images/lockup.png\",\n    \"likeCount\": 42,\n    \"localizacion\": {\n        \"_latitude\": 0,\n        \"_longitude\": 0\n    },\n    \"tematica\": \"asdf\",\n    \"titulo\": \"el mejor graffiti\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -165,29 +166,30 @@
 							}
 						},
 						"url": {
-							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/createComment",
-							"protocol": "https",
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/createGraffiti",
+							"protocol": "http",
 							"host": [
-								"us-central1-thegraffitispotter",
-								"cloudfunctions",
-								"net"
+								"localhost"
 							],
+							"port": "5000",
 							"path": [
+								"thegraffitispotter",
+								"us-central1",
 								"api",
-								"createComment"
+								"createGraffiti"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "updateComment",
+					"name": "updateGraffiti",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"at0mXRRtQtWRu0a3CEmG\",\r\n    \"usuario\": \"/usuarios/tugrafitero69\",\r\n    \"graffiti\": \"/graffitis/1234\",\r\n    \"comentario\": \"Hola mundo editado!\"\r\n}",
+							"raw": "{\n    \"id\": \"SQuthugaYTYTcd7UkjGJ\",\n    \"autor\": \"/usuarios/tugrafitero69\",\n    \"commentCount\": 0,\n    \"descripcion\": \"descripción test\",\n    \"estado\": \"soltero\",\n    \"fecha\": {\n        \"_seconds\": 1605482000,\n        \"_nanoseconds\": 0\n    },\n    \"imagen\": \"https://www.gstatic.com/devrel-devsite/prod/v2210075187f059b839246c2c03840474501c3c6024a99fb78f6293c1b4c0f664/firebase/images/lockup.png\",\n    \"likeCount\": 42,\n    \"localizacion\": {\n        \"_latitude\": 0,\n        \"_longitude\": 0\n    },\n    \"tematica\": \"asdf\",\n    \"titulo\": \"el MÁS mejor graffiti\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -195,29 +197,30 @@
 							}
 						},
 						"url": {
-							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/updateComment",
-							"protocol": "https",
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/updateGraffiti",
+							"protocol": "http",
 							"host": [
-								"us-central1-thegraffitispotter",
-								"cloudfunctions",
-								"net"
+								"localhost"
 							],
+							"port": "5000",
 							"path": [
+								"thegraffitispotter",
+								"us-central1",
 								"api",
-								"updateComment"
+								"updateGraffiti"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "deleteComment",
+					"name": "deleteGraffiti",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"4LjoCkEYTYNFp6W9HaBk\"\r\n}",
+							"raw": "{\n    \"id\": \"SQuthugaYTYTcd7UkjGJ\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -225,16 +228,57 @@
 							}
 						},
 						"url": {
-							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/deleteComment",
-							"protocol": "https",
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/deleteGraffiti",
+							"protocol": "http",
 							"host": [
-								"us-central1-thegraffitispotter",
-								"cloudfunctions",
-								"net"
+								"localhost"
 							],
+							"port": "5000",
 							"path": [
+								"thegraffitispotter",
+								"us-central1",
 								"api",
-								"deleteComment"
+								"deleteGraffiti"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Open Data",
+			"item": [
+				{
+					"name": "http://localhost:5000/thegraffitispotter/us-central1/api/skatebmx",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"meters\": 1000,\r\n    \"lon\": 369689.949,\r\n    \"lat\": 4061985.986\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/skatebmx",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"skatebmx"
 							]
 						}
 					},
