@@ -8,6 +8,22 @@ admin.initializeApp();
 const express = require('express');
 const app = express();
 
+//  OPEN DATA SOURCE FOR SKATE AND BMX FACILITIES IN MALAGA. originally a geojson file, it is updated monthly
+const URL_SKATES = "https://datosabiertos.malaga.eu/recursos/deportes/equipamientos//da_deportesPatinajeSkateBmx-25830.geojson";
+
+//  OPEN DATA SOURCE FOR PAPER CONTAINERS IN MALAGA. originally a geojson file, it is updated daily
+const URL_PAPER = "https://datosabiertos.malaga.eu/recursos/ambiente/limasa/da_papelCarton-25830.geojson"
+
+//  OPEN DATA SOURCE FOR ECOPUNTOS IN MALAGA, originally a geojson file, it is updated daily
+const URL_ECOPUNTO = "https://datosabiertos.malaga.eu/recursos/energia/ecopuntos/da_ecopuntos-25830.geojson"
+
+//  Used for HTTP Calls
+const Axios = require("axios");
+const { toNamespacedPath } = require('path');
+
+//  Used for JSON transformation
+const DataTransform = require("node-json-transform").DataTransform;
+
 
 //  ██╗   ██╗███████╗███████╗██████╗ ███████╗
 //  ██║   ██║██╔════╝██╔════╝██╔══██╗██╔════╝
@@ -302,6 +318,206 @@ app.delete('/deleteGraffiti', (req, res) => {
   })
 })
 
+// ██████╗ ██████╗ ███████╗███╗   ██╗    ██████╗  █████╗ ████████╗ █████╗ 
+//██╔═══██╗██╔══██╗██╔════╝████╗  ██║    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+//██║   ██║██████╔╝█████╗  ██╔██╗ ██║    ██║  ██║███████║   ██║   ███████║
+//██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║    ██║  ██║██╔══██║   ██║   ██╔══██║
+//╚██████╔╝██║     ███████╗██║ ╚████║    ██████╔╝██║  ██║   ██║   ██║  ██║
+// ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+// Functions using open data from Ayuntamiento de Malaga                                                                        
+                                                                        
+
+//---------------------------------------------------------------------------------------
+//
+//
+//  Returns all the skatebmx areas in a radius of x meters from a given position
+//
+//
+//---------------------------------------------------------------------------------------
+
+
+//Structure to simplify the given data
+const skateMap = {
+  list: "skates",
+item: {
+  id: "id",
+  nombre: "properties.NOMBRE",
+  location: { // USING EPSG 25830 (COORDINATES IN METERS)
+    lon: "geometry.coordinates.0",
+    lat: "geometry.coordinates.1"
+    
+  }
+}
+}
+
+app.get('/skatebmx', (request, response) => {
+
+  Axios.get(URL_SKATES)
+      .then(res => {
+        let dbInMemory = { skates: res.data.features }; //Takes only the JSON elements (The source is a GeoJSON file)
+        let dataTransform = DataTransform(dbInMemory, skateMap);
+        let result = dataTransform.transform();
+
+        //Find the parks that satisfy the condition of distance
+        function findItems(array) {
+          var aux = [];
+          for (var i = 0; i < array.length; i++) {
+            var x = array[i].location.lon;
+            var y = array[i].location.lat;
+            let distancia = Math.sqrt(Math.pow((request.body.lon - x), 2) + Math.pow((request.body.lat - y), 2));
+             if (distancia <= request.body.meters) {
+                 aux.push(array[i]);
+             }
+          }
+          return(aux);
+      }
+      
+     
+      return response.json(findItems(result));
+
+      })
+      .catch(err => {
+        response.status(500).json({error: 'Something went wrong'});
+        console.error(err);
+      })
+        
+})
+
+
+//--------------------------------------------------------------------------------------
+//
+//
+//  Returns the nearest paper container and his type from a position given the in request
+//
+//
+//--------------------------------------------------------------------------------------
+
+
+//Structure to simplify the given data
+const containerMap = {
+  list: "containers",
+item: {
+  id: "id",
+  recogida: "properties.recogida",
+  location: { // USING EPSG 25830 (COORDINATES IN METERS)
+    lon: "geometry.coordinates.0",
+    lat: "geometry.coordinates.1"
+    
+  }
+}
+}
+
+app.get('/container', (request, response) => {
+
+  Axios.get(URL_PAPER)
+      .then(res => {
+        let dbInMemory = { containers: res.data.features }; //Takes only the JSON elements (The source is a GeoJSON file)
+        let dataTransform = DataTransform(dbInMemory, containerMap);
+        let result = dataTransform.transform();
+        
+        //Find the container with the closest position to the given coordinates
+        function findItem(array) {
+          var temp;
+          var aux = [];
+          for (var i = 0; i < array.length; i++) {
+            
+            var x = array[i].location.lon;
+            var y = array[i].location.lat;
+            let distancia = Math.sqrt(Math.pow((request.body.lon - x), 2) + Math.pow((request.body.lat - y), 2));
+
+            if(i === 0){
+              temp = distancia;
+              aux.push(array[i]);
+            }else{
+              if (temp < distancia) {
+                temp = distancia;
+                aux = [];
+                aux.push(array[i]);
+              }
+             
+            }
+          }
+          return(aux);
+      }
+      
+     
+      return response.json(findItem(result));
+
+      })
+      .catch(err => {
+        response.status(500).json({error: 'Something went wrong'});
+        console.error(err);
+      })
+        
+}) 
+
+//---------------------------------------------------------------------
+//
+//
+//  Returns data (In particular a high res picture) of the nearest Ecopunto
+//    
+//
+//--------------------------------------------------------------------
+
+
+//Structure to simplify the given data
+const ecopuntoMap = {
+  list: "ecopuntos",
+item: {
+  id: "id",
+  foto: "properties.foto",
+  elemento: "properties.elemento",
+  location: { // USING EPSG 25830 (COORDINATES IN METERS)
+    lon: "geometry.coordinates.0",
+    lat: "geometry.coordinates.1"
+    
+  }
+}
+}
+
+app.get('/ecopunto', (request, response) => {
+
+  Axios.get(URL_ECOPUNTO)
+      .then(res => {
+        let dbInMemory = { ecopuntos: res.data.features }; //Takes only the JSON elements (The source is a GeoJSON file)
+        let dataTransform = DataTransform(dbInMemory, ecopuntoMap);
+        let result = dataTransform.transform();
+        
+        //Find the ecopunto with the closest location to the given coordinates
+        function findItem(array) {
+          var temp;
+          var aux = [];
+          for (var i = 0; i < array.length; i++) {
+            
+            var x = array[i].location.lon;
+            var y = array[i].location.lat;
+            let distancia = Math.sqrt(Math.pow((request.body.lon - x), 2) + Math.pow((request.body.lat - y), 2));
+
+            if(i === 0){
+              temp = distancia;
+              aux.push(array[i]);
+            }else{
+              if (temp < distancia) {
+                temp = distancia;
+                aux = [];
+                aux.push(array[i]);
+              }
+             
+            }
+          }
+          return(aux);
+      }
+      
+     
+      return response.json(findItem(result));
+
+      })
+      .catch(err => {
+        response.status(500).json({error: 'Something went wrong'});
+        console.error(err);
+      })
+        
+}) 
 
 // https://url.com/api/....
 exports.api = functions.https.onRequest(app);
