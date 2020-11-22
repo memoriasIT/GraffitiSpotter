@@ -318,6 +318,87 @@ app.delete('/deleteGraffiti', (req, res) => {
   })
 })
 
+//Like a graffiti
+app.get('/graffiti/:graffitiId/likeGraffiti', (request, response) => {
+  const db = admin.firestore();
+  const likeDoc = db.collection('likes').where('usuario', '==', request.user.username)
+      .where('graffiti', '==', request.params.graffitiId).limit(1);
+
+  const graffitiDoc = db.doc(`/graffitis/${request.params.graffitiId}`);
+
+  let graffitiData;
+
+  graffitiDoc.get()
+    .then(doc => {
+        if(doc.exists) {
+            graffitiData = doc.data();
+            graffitiData.graffitiId = doc.id;
+            return likeDoc.get();
+        } else {
+            return response.status(404).json({error : 'Graffiti no encontrado'});
+        }
+    })
+    .then(data => {
+        if(data.empty) {
+            return db.collection('likes').add({
+                graffiti : request.params.graffitiId,
+                usuario: request.user.username
+            })
+            .then(() => {
+                graffitiData.likeCount++
+                return graffitiDoc.update({likeCount: graffitiData.likeCount})
+            })
+            .then(() => {
+                return response.json(graffitiData);
+            })
+        } else {
+            return response.status(400).json({error: 'Graffiti already liked'});
+        }
+    })
+    .catch(err => {
+        console.error(err)
+        return response.status(500).json({error: err.code});
+    })
+});
+//Unlike a graffiti
+app.get('/graffiti/:graffitiId/unlikeGraffiti', (request, response) => {
+  const db = admin.firestore();
+  const likeDoc = db.collection('likes').where('usuario', '==', request.user.username)
+  .where('graffiti', '==', request.params.graffitiId).limit(1);
+
+ const graffitiDoc = db.doc(`/graffitis/${request.params.graffitiId}`);
+
+ let graffitiData;
+
+ graffitiDoc.get()
+    .then(doc => {
+        if(doc.exists) {
+            graffitiData = doc.data();
+            graffitiData.graffitiId = doc.id;
+            return likeDoc.get();
+        } else {
+            return response.status(404).json({error : 'Graffiti no encontrado'});
+        }
+    })
+    .then(data => {
+        if(!data.empty) {
+            return db.doc(`/likes/${data.docs[0].id}`).delete()
+             .then(() =>{
+                 graffitiData.likeCount--;
+                 return graffitiDoc.update({likeCount: graffitiData.likeCount});
+             })
+             .then(() => {
+                 response.json(graffitiData);
+             })
+        } else {
+            return response.status(400).json({error: 'Graffiti not liked'});
+        }
+    })
+    .catch(err => {
+        console.error(err)
+        response.status(500).json({error: err.code});
+    })
+});
 // ██████╗ ██████╗ ███████╗███╗   ██╗    ██████╗  █████╗ ████████╗ █████╗ 
 //██╔═══██╗██╔══██╗██╔════╝████╗  ██║    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
 //██║   ██║██████╔╝█████╗  ██╔██╗ ██║    ██║  ██║███████║   ██║   ███████║
