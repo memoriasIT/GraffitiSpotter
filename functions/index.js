@@ -319,9 +319,9 @@ app.delete('/deleteGraffiti', (req, res) => {
 })
 
 //Like a graffiti
-app.get('/graffiti/:graffitiId/likeGraffiti', (request, response) => {
+app.post('/graffiti/:graffitiId/likeGraffiti', (request, response) => {
   const db = admin.firestore();
-  const likeDoc = db.collection('likes').where('usuario', '==', request.user.username)
+  const likeDoc = db.collection('likes').where('usuario', '==', request.body.username)
       .where('graffiti', '==', request.params.graffitiId).limit(1);
 
   const graffitiDoc = db.doc(`/graffitis/${request.params.graffitiId}`);
@@ -342,7 +342,7 @@ app.get('/graffiti/:graffitiId/likeGraffiti', (request, response) => {
         if(data.empty) {
             return db.collection('likes').add({
                 graffiti : request.params.graffitiId,
-                usuario: request.user.username
+                usuario: request.body.username
             })
             .then(() => {
                 graffitiData.likeCount++
@@ -361,9 +361,9 @@ app.get('/graffiti/:graffitiId/likeGraffiti', (request, response) => {
     })
 });
 //Unlike a graffiti
-app.get('/graffiti/:graffitiId/unlikeGraffiti', (request, response) => {
+app.post('/graffiti/:graffitiId/unlikeGraffiti', (request, response) => {
   const db = admin.firestore();
-  const likeDoc = db.collection('likes').where('usuario', '==', request.user.username)
+  const likeDoc = db.collection('likes').where('usuario', '==', request.body.username)
   .where('graffiti', '==', request.params.graffitiId).limit(1);
 
  const graffitiDoc = db.doc(`/graffitis/${request.params.graffitiId}`);
