@@ -354,6 +354,123 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "comment",
+			"item": [
+				{
+					"name": "listComments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/comments",
+							"protocol": "https",
+							"host": [
+								"us-central1-thegraffitispotter",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createComment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"/usuarios/tugrafitero69\",\r\n    \"graffiti\": \"/graffitis/1234\",\r\n    \"comentario\": \"Hola mundo!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/createComment",
+							"protocol": "https",
+							"host": [
+								"us-central1-thegraffitispotter",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"createComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateComment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"at0mXRRtQtWRu0a3CEmG\",\r\n    \"usuario\": \"/usuarios/tugrafitero69\",\r\n    \"graffiti\": \"/graffitis/1234\",\r\n    \"comentario\": \"Hola mundo editado!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/updateComment",
+							"protocol": "https",
+							"host": [
+								"us-central1-thegraffitispotter",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"updateComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteComment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"4LjoCkEYTYNFp6W9HaBk\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/deleteComment",
+							"protocol": "https",
+							"host": [
+								"us-central1-thegraffitispotter",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"deleteComment"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
