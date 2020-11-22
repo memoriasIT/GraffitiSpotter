@@ -251,7 +251,7 @@
 			"name": "Open Data",
 			"item": [
 				{
-					"name": "http://localhost:5000/thegraffitispotter/us-central1/api/skatebmx",
+					"name": "skatebmx",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -279,6 +279,74 @@
 								"us-central1",
 								"api",
 								"skatebmx"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "container",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lon\": 369689.949,\r\n    \"lat\": 4061985.986\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/container",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"container"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ecopunto",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lon\": 369689.949,\r\n    \"lat\": 4061985.986\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/ecopunto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"ecopunto"
 							]
 						}
 					},
