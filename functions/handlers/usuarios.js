@@ -1,4 +1,4 @@
-const { db } = require('../util/admin');
+const { db, admin } = require('../util/admin');
 
 // Auth
 const firebase = require('firebase');
@@ -6,6 +6,15 @@ var firebaseConfig = require('../util/config');
 firebase.initializeApp(firebaseConfig);
 
 const { validateSignupData, validateLoginData } = require('../util/validators');
+
+// Function to remove empty elements from a JSON object
+const removeEmptyOrNull = (obj) => {
+    Object.keys(obj).forEach(k =>
+      (obj[k] && typeof obj[k] === 'object') && removeEmptyOrNull(obj[k]) ||
+      (!obj[k] && obj[k] !== undefined) && delete obj[k]
+    );
+    return obj;
+  };
 
 
 exports.signup = (req, res) => {
@@ -44,7 +53,7 @@ exports.signup = (req, res) => {
         token = idToken;
         // We need more info than what firebase auth needs
         // We store it in firestore /usuarios/
-        const newUserInFirestore = {
+        const rawInput = {
           biografia: req.body.biografia,
           edad: req.body.edad,
           imagen: req.body.imagen,
@@ -53,6 +62,8 @@ exports.signup = (req, res) => {
           username: newUser.username,
           userId: userId,
         }
+
+        const newUserInFirestore = removeEmptyOrNull(rawInput);
   
         return db.doc(`/usuarios/${newUser.username}`).set(newUserInFirestore);
       })
@@ -110,4 +121,72 @@ exports.login = (req, res) => {
             .json({ general: 'Wrong credentials, please try again' });
         } else return res.status(500).json({ error: err.code });
       });
+  }
+
+
+exports.listUsers = (req, res) => {
+    admin
+    .firestore()
+    .collection('usuarios')
+    .orderBy('username')
+    .get()
+    .then((data) => {
+      let users = [];
+      data.forEach((doc) => {
+        // Push an object to response with all user parameters
+        users.push({
+          userId: doc.id,
+          body: doc.data().body,
+          biografia: doc.data().biografia,
+          edad: doc.data().edad,
+          imagen: doc.data().imagen,
+          nombre: doc.data().nombre,
+          password: doc.data().password,
+          username: doc.data().username,
+        });
+      });
+      
+      // Give response in JSON format
+      return res.json(users);
+    })
+    .catch(err => console.error(err));
+  }
+
+exports.updateUser = (req, res) => {
+    // Take data from request body
+    const rawInput = {
+      biografia: req.body.biografia,
+      edad: req.body.edad,
+      imagen: req.body.imagen,
+      nombre: req.body.nombre,
+      password: req.body.password,
+      username: req.body.username,
+    }
+
+    const updateUser = removeEmptyOrNull(rawInput);
+
+    // Add a document to the collection with id of the username, use object newUser
+    db.collection('usuarios').doc(req.body.username).update(updateUser)
+    .then (doc => {
+       res.json({message: 'User updated successfully'});
+       return res;
+    })
+    .catch(err => {
+      res.status(500).json({error: 'Something went wrong'});
+      console.error(err);
+    })
+  }
+
+
+exports.deleteUser = (req, res) => {
+    // Deletes a document with the id provided in body request
+    db.collection('usuarios').doc(req.body.username).delete()
+    .then (doc => {
+       res.json({message: 'User deleted successfully'});
+       return res;
+    })
+    .catch(err => {
+      res.status(500).json({error: 'Something went wrong'});
+      console.error(err);
+    })
   }

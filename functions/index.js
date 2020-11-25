@@ -1,7 +1,15 @@
 const functions = require('firebase-functions');
 
 const { getAllGraffitis, postGraffiti } = require('./handlers/graffitis');
-const { signup, login } = require('./handlers/usuarios');
+
+const { 
+  signup,
+  login,
+  listUsers,
+  updateUser,
+  deleteUser,
+  } = require('./handlers/usuarios');
+
 const AuthenticationMiddleware = require('./util/AuthenticationMiddleware');
 
 // Express to manage calls
@@ -25,8 +33,6 @@ const { toNamespacedPath } = require('path');
 const DataTransform = require("node-json-transform").DataTransform;
 
 
-
-
 //  ██╗   ██╗███████╗███████╗██████╗ ███████╗
 //  ██║   ██║██╔════╝██╔════╝██╔══██╗██╔════╝
 //  ██║   ██║███████╗█████╗  ██████╔╝███████╗
@@ -35,100 +41,12 @@ const DataTransform = require("node-json-transform").DataTransform;
 //   ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝
 //  CRUD for the 'usuarios' collection              
 
-
 app.post('/signup', signup);
 app.post('/login', login);
+app.get('/users', AuthenticationMiddleware, listUsers);
+app.put('/updateUser', AuthenticationMiddleware, updateUser);
+app.delete('/deleteUser', AuthenticationMiddleware, deleteUser);
 
- // CREATE a new user with a POST request. Takes input from body in JSON format.
- app.post('/createUser', (req, res) => {
-  // Take data from request body
-  const newUser = {
-    biografia: req.body.biografia,
-    edad: req.body.edad,
-    imagen: req.body.imagen,
-    nombre: req.body.nombre,
-    password: req.body.password,
-    username: req.body.username,
-  }
-
-  // Add a document to the collection with id of the username, use object newUser
-  db.collection('usuarios').doc(req.body.username).set(newUser)
-  .then (doc => {
-     res.json({message: 'User created successfully'});
-     return res;
-  })
-  .catch(err => {
-    res.status(500).json({error: 'Something went wrong'});
-    console.error(err);
-  })
-})
-
-// READ all users
-app.get('/users', (req, res) => {
-  admin
-  .firestore()
-  .collection('usuarios')
-  .orderBy('username')
-  .get()
-  .then((data) => {
-    let users = [];
-    data.forEach((doc) => {
-      // Push an object to response with all user parameters
-      users.push({
-        userId: doc.id,
-        body: doc.data().body,
-        biografia: doc.data().biografia,
-        edad: doc.data().edad,
-        imagen: doc.data().imagen,
-        nombre: doc.data().nombre,
-        password: doc.data().password,
-        username: doc.data().username,
-      });
-    });
-    
-    // Give response in JSON format
-    return res.json(users);
-  })
-  .catch(err => console.error(err));
-});
-
-// UPDATE an existing user given a userId
-app.put('/updateUser', (req, res) => {
-  // Take data from request body
-  const updateUser = {
-    biografia: req.body.biografia,
-    edad: req.body.edad,
-    imagen: req.body.imagen,
-    nombre: req.body.nombre,
-    password: req.body.password,
-    username: req.body.username,
-  }
-
-  // Add a document to the collection with id of the username, use object newUser
-  db.collection('usuarios').doc(req.body.username).update(updateUser)
-  .then (doc => {
-     res.json({message: 'User updated successfully'});
-     return res;
-  })
-  .catch(err => {
-    res.status(500).json({error: 'Something went wrong'});
-    console.error(err);
-  })
-})
-
-// DELETE an existing user given a userId
-app.delete('/deleteUser', (req, res) => {
-  // Deletes a document with the id provided in body request
-  db.collection('usuarios').doc(req.body.username).delete()
-  .then (doc => {
-     res.json({message: 'User deleted successfully'});
-     return res;
-  })
-  .catch(err => {
-    res.status(500).json({error: 'Something went wrong'});
-    console.error(err);
-  })
-})
 
 //   ██████╗ ██████╗ ███╗   ███╗███╗   ███╗███████╗███╗   ██╗████████╗███████╗
 //  ██╔════╝██╔═══██╗████╗ ████║████╗ ████║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
