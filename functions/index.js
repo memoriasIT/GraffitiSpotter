@@ -4,6 +4,23 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
+const db = admin.firestore();
+
+// Auth
+const firebase = require('firebase');
+var firebaseConfig = {
+  apiKey: "AIzaSyACyZk22WGD44rDR4QEuwtTcoNH_UOjFCE",
+  authDomain: "thegraffitispotter.firebaseapp.com",
+  databaseURL: "https://thegraffitispotter.firebaseio.com",
+  projectId: "thegraffitispotter",
+  storageBucket: "thegraffitispotter.appspot.com",
+  messagingSenderId: "433358686297",
+  appId: "1:433358686297:web:8c41adf7aa3d2a2a768948"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+
 // Express to manage calls
 const express = require('express');
 const app = express();
@@ -46,7 +63,7 @@ const DataTransform = require("node-json-transform").DataTransform;
   }
 
   // Add a document to the collection with id of the username, use object newUser
-  admin.firestore().collection('usuarios').doc(req.body.username).set(newUser)
+  db.collection('usuarios').doc(req.body.username).set(newUser)
   .then (doc => {
      res.json({message: 'User created successfully'});
      return res;
@@ -101,7 +118,7 @@ app.put('/updateUser', (req, res) => {
   }
 
   // Add a document to the collection with id of the username, use object newUser
-  admin.firestore().collection('usuarios').doc(req.body.username).update(updateUser)
+  db.collection('usuarios').doc(req.body.username).update(updateUser)
   .then (doc => {
      res.json({message: 'User updated successfully'});
      return res;
@@ -115,7 +132,7 @@ app.put('/updateUser', (req, res) => {
 // DELETE an existing user given a userId
 app.delete('/deleteUser', (req, res) => {
   // Deletes a document with the id provided in body request
-  admin.firestore().collection('usuarios').doc(req.body.username).delete()
+  db.collection('usuarios').doc(req.body.username).delete()
   .then (doc => {
      res.json({message: 'User deleted successfully'});
      return res;
@@ -138,7 +155,7 @@ app.post('/createComment', (req, res) => {
  }
 
  // Add a document to the collection with id of the username, use object newUser
- admin.firestore().collection('comentarios').doc().set(newComment)
+ db.collection('comentarios').doc().set(newComment)
  .then (doc => {
     res.json({message: 'Comment created successfully'});
     return res;
@@ -183,7 +200,7 @@ app.put('/updateComment', (req, res) => {
     graffiti: req.body.graffiti,
     comentario: req.body.comentario,
   }
-  admin.firestore().collection('comentarios').doc(req.body.id).update(updateComment)
+  db.collection('comentarios').doc(req.body.id).update(updateComment)
   .then (doc => {
      res.json({message: 'Comment updated successfully'});
      return res;
@@ -197,7 +214,7 @@ app.put('/updateComment', (req, res) => {
 // DELETE an existing comment given a commentId
 app.delete('/deleteComment', (req, res) => {
   // Deletes a document with the id provided in body request
-  admin.firestore().collection('comentarios').doc(req.body.id).delete()
+  db.collection('comentarios').doc(req.body.id).delete()
   .then (doc => {
      res.json({message: 'Comment deleted successfully'});
      return res;
@@ -230,7 +247,7 @@ app.delete('/deleteComment', (req, res) => {
   }
 
   // Add a document to the collection, use object newGraffiti
-  admin.firestore().collection('graffitis').add(newGraffiti)
+  db.collection('graffitis').add(newGraffiti)
   .then (doc => {
      res.json({message: 'Graffiti created successfully'});
      return res;
@@ -293,7 +310,7 @@ app.put('/updateGraffiti', (req, res) => {
   }
 
   // Add a document to the collection with id of the graffiti, use object updateGraffiti
-  admin.firestore().collection('graffitis').doc(req.body.id).update(updateGraffiti)
+  db.collection('graffitis').doc(req.body.id).update(updateGraffiti)
   .then (doc => {
      res.json({message: 'Graffiti updated successfully'});
      return res;
@@ -307,7 +324,7 @@ app.put('/updateGraffiti', (req, res) => {
 // DELETE an existing graffiti given a id
 app.delete('/deleteGraffiti', (req, res) => {
   // Deletes a document with the id provided in body request
-  admin.firestore().collection('graffitis').doc(req.body.id).delete()
+  db.collection('graffitis').doc(req.body.id).delete()
   .then (doc => {
      res.json({message: 'Graffiti deleted successfully'});
      return res;
@@ -320,7 +337,6 @@ app.delete('/deleteGraffiti', (req, res) => {
 
 //Like a graffiti
 app.post('/graffiti/:graffitiId/likeGraffiti', (request, response) => {
-  const db = admin.firestore();
   const likeDoc = db.collection('likes').where('usuario', '==', request.body.username)
       .where('graffiti', '==', request.params.graffitiId).limit(1);
 
@@ -362,7 +378,6 @@ app.post('/graffiti/:graffitiId/likeGraffiti', (request, response) => {
 });
 //Unlike a graffiti
 app.post('/graffiti/:graffitiId/unlikeGraffiti', (request, response) => {
-  const db = admin.firestore();
   const likeDoc = db.collection('likes').where('usuario', '==', request.body.username)
   .where('graffiti', '==', request.params.graffitiId).limit(1);
 
@@ -599,6 +614,71 @@ app.get('/ecopunto', (request, response) => {
       })
         
 }) 
+
+// Signup route
+app.post('/signup', (req, res) => {
+  const newUser = {
+    email: req.body.email,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword,
+    username: req.body.username
+  };
+
+  console.log("hEEEEEY")
+  console.log(newUser.email)
+
+  // TODO: validate data
+
+  let token, userId;
+  db.doc(`/users/${newUser.username}`)
+    .get()
+    .then((doc) => {
+      // UserID must be unique
+      if (doc.exists) {
+        // Bad request - User exists
+        return res.status(400).json({ username: 'This username is already taken' });
+      } else {
+        // Register user
+        return firebase
+          .auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
+      }
+    })
+    // User was created, return access token
+    .then((data) => {
+      userId = data.user.uid;
+      return data.user.getIdToken();
+    })
+    .then((idToken) => {
+      token = idToken;
+      // We need more info than what firebase auth needs
+      // We store it in firestore /usuarios/
+      const newUserInFirestore = {
+        biografia: req.body.biografia,
+        edad: req.body.edad,
+        imagen: req.body.imagen,
+        nombre: req.body.nombre,
+        password: newUser.password,
+        username: newUser.username,
+        userId: userId,
+      }
+
+      return db.doc(`/usuarios/${newUser.username}`).set(newUserInFirestore);
+    })
+    // Successfully created code and token to the user
+    .then(() => {
+      return res.status(201).json({ token });
+    })
+    // Log error and send bad status code
+    .catch((err) => {
+      console.error(err);
+      if (err.code === 'auth/email-already-in-use') {
+        return res.status(400).json({ email: 'Email is already is use' });
+      } else {
+        return res.status(500).json({ error: err.code });
+      }
+    });
+});
+
 
 // https://url.com/api/....
 exports.api = functions.https.onRequest(app);
