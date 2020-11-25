@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "5a064d1d-0b24-4467-a7e0-bba0969a4c6e",
-		"name": "GraffitiSpotter",
+		"_postman_id": "3fd8c45d-cbec-4d23-b15b-940454cf43a0",
+		"name": "GraffitiSpotter API Docs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -31,7 +31,69 @@
 					"response": []
 				},
 				{
-					"name": "createUser",
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"test\",\r\n    \"confirmPassword\": \"test\",\r\n    \"username\": \"Pedrojuan14\",\r\n    \"biografia\": \"fjdsklafjlkasd;\",\r\n    \"edad\": \"19\",\r\n    \"imagen\": \"pedrojuan\",\r\n    \"nombre\": \"Pedro juan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"pedrojuan@gmail.com\",\r\n    \"password\": \"contrasena\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser - DEPRECATED - ONLY REGISTERS IN FIRESTORE",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -118,6 +180,436 @@
 								"us-central1",
 								"api",
 								"deleteUser"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "graffiti",
+			"item": [
+				{
+					"name": "listGraffitis",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/graffitis?Authentication=Bearer ",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"graffitis"
+							],
+							"query": [
+								{
+									"key": "Authentication",
+									"value": "Bearer "
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createGraffiti - Requires Access Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjlhZDBjYjdjMGY1NTkwMmY5N2RjNTI0NWE4ZTc5NzFmMThkOWM3NjYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdGhlZ3JhZmZpdGlzcG90dGVyIiwiYXVkIjoidGhlZ3JhZmZpdGlzcG90dGVyIiwiYXV0aF90aW1lIjoxNjA2MzA0NTA1LCJ1c2VyX2lkIjoiUUc4NkFpRW5wU1RDV20wQXBZelJRdmtPdUpqMSIsInN1YiI6IlFHODZBaUVucFNUQ1dtMEFwWXpSUXZrT3VKajEiLCJpYXQiOjE2MDYzMDQ1MDUsImV4cCI6MTYwNjMwODEwNSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInRlc3RAdGVzdC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.hOQlLDXzzEJNshZdbbhwbR8o1Q4E92rIyOZNU7oQFuszik3J-st3ADD2u97H67_EItnTWGgVS05heVSrlgIHGLbTE6L8urWTs3qP7vikt3PzSp60Kc-91BJBrAl1-HbymzRnJuWDzCRhvufKH10A7yUDsRXHsE6J3n6qYF8WnvvDphu8xdyAMIe6gIELgtSkP-ZfcqKhRKvUzGQ7M0R2j48_dZPaMpGdBt9ER3DDs3ARMdbqWj6f8qGdQT23F0mwweu__IneU7nY8O6zkTOJ-j7fL1FUvZtisPIkL9FM00FGS3v59MyvO-SvYe6YWCgLcOrinezJGKiYekmXpj9Xbg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"commentCount\": 0,\n    \"descripcion\": \"descripción test\",\n    \"estado\": \"soltero\",\n    \"fecha\": {\n        \"_seconds\": 1605482000,\n        \"_nanoseconds\": 0\n    },\n    \"imagen\": \"https://www.gstatic.com/devrel-devsite/prod/v2210075187f059b839246c2c03840474501c3c6024a99fb78f6293c1b4c0f664/firebase/images/lockup.png\",\n    \"likeCount\": 42,\n    \"localizacion\": {\n        \"_latitude\": 0,\n        \"_longitude\": 0\n    },\n    \"tematica\": \"asdf\",\n    \"titulo\": \"el mejor graffiti\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/createGraffiti",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"createGraffiti"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateGraffiti",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"SQuthugaYTYTcd7UkjGJ\",\n    \"autor\": \"/usuarios/tugrafitero69\",\n    \"commentCount\": 0,\n    \"descripcion\": \"descripción test\",\n    \"estado\": \"soltero\",\n    \"fecha\": {\n        \"_seconds\": 1605482000,\n        \"_nanoseconds\": 0\n    },\n    \"imagen\": \"https://www.gstatic.com/devrel-devsite/prod/v2210075187f059b839246c2c03840474501c3c6024a99fb78f6293c1b4c0f664/firebase/images/lockup.png\",\n    \"likeCount\": 42,\n    \"localizacion\": {\n        \"_latitude\": 0,\n        \"_longitude\": 0\n    },\n    \"tematica\": \"asdf\",\n    \"titulo\": \"el MÁS mejor graffiti\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/updateGraffiti",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"updateGraffiti"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteGraffiti",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"SQuthugaYTYTcd7UkjGJ\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/deleteGraffiti",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"deleteGraffiti"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "comment",
+			"item": [
+				{
+					"name": "listComments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/comments",
+							"protocol": "https",
+							"host": [
+								"us-central1-thegraffitispotter",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createComment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"/usuarios/tugrafitero69\",\r\n    \"graffiti\": \"/graffitis/1234\",\r\n    \"comentario\": \"Hola mundo!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/createComment",
+							"protocol": "https",
+							"host": [
+								"us-central1-thegraffitispotter",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"createComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateComment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"at0mXRRtQtWRu0a3CEmG\",\r\n    \"usuario\": \"/usuarios/tugrafitero69\",\r\n    \"graffiti\": \"/graffitis/1234\",\r\n    \"comentario\": \"Hola mundo editado!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/updateComment",
+							"protocol": "https",
+							"host": [
+								"us-central1-thegraffitispotter",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"updateComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteComment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"4LjoCkEYTYNFp6W9HaBk\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-thegraffitispotter.cloudfunctions.net/api/deleteComment",
+							"protocol": "https",
+							"host": [
+								"us-central1-thegraffitispotter",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"deleteComment"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Open Data",
+			"item": [
+				{
+					"name": "skatebmx",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"meters\": 1000,\r\n    \"lon\": 369689.949,\r\n    \"lat\": 4061985.986\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/skatebmx",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"skatebmx"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "container",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lon\": 369689.949,\r\n    \"lat\": 4061985.986\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/container",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"container"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ecopunto",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lon\": 369689.949,\r\n    \"lat\": 4061985.986\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/ecopunto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"ecopunto"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "likes",
+			"item": [
+				{
+					"name": "likeGraffiti",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"nuevo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/graffiti/0HkheaFobIjKZFXCiB42/likeGraffiti",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"graffiti",
+								"0HkheaFobIjKZFXCiB42",
+								"likeGraffiti"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unlikeGraffiti",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"nuevo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/thegraffitispotter/us-central1/api/graffiti/0HkheaFobIjKZFXCiB42/unlikeGraffiti",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thegraffitispotter",
+								"us-central1",
+								"api",
+								"graffiti",
+								"0HkheaFobIjKZFXCiB42",
+								"unlikeGraffiti"
 							]
 						}
 					},

@@ -50,7 +50,6 @@ const DataTransform = require("node-json-transform").DataTransform;
 //  ╚═╝     ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
 
 const AuthenticationMiddleware = (req, res, next) => {
-
   let idToken;
   if (
     req.headers.authorization &&
