@@ -4,6 +4,21 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
+// Auth
+const firebase = require('firebase');
+var firebaseConfig = {
+  apiKey: "AIzaSyACyZk22WGD44rDR4QEuwtTcoNH_UOjFCE",
+  authDomain: "thegraffitispotter.firebaseapp.com",
+  databaseURL: "https://thegraffitispotter.firebaseio.com",
+  projectId: "thegraffitispotter",
+  storageBucket: "thegraffitispotter.appspot.com",
+  messagingSenderId: "433358686297",
+  appId: "1:433358686297:web:8c41adf7aa3d2a2a768948"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+
 // Express to manage calls
 const express = require('express');
 const app = express();
@@ -111,6 +126,20 @@ app.delete('/deleteUser', (req, res) => {
 })
 
 
+// Signup route
+app.post("/signup", (req, res) => {
+  const newUser = {
+    email = req.body.email,
+    password = req.body.password,
+    confirmPassword = req.body.confirmPassword,
+    handle = req.body.handle,
+  };
+
+  firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+    .then(data => {
+      return res.status(201).json({})
+    })
+})
 
 // https://url.com/api/....
 exports.api = functions.https.onRequest(app);
