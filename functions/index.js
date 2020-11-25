@@ -50,6 +50,150 @@ const DataTransform = require("node-json-transform").DataTransform;
 //   ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝
 //  CRUD for the 'usuarios' collection              
 
+// Signup route
+app.post('/signup', (req, res) => {
+  // HELPER FUNCTIONS TO VALIDATE INPUTS
+  // -----------------
+  // Email must follow email pattern - Just believe the regex lol
+  const isEmail = (email) => {
+    const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (email.match(regEx)) return true; // It is a valid email
+    else return false;
+  };
+  
+  // Email cannot be empty
+  const isEmpty = (string) => {
+    // If only spaces it is deleted aswell
+    if (string.trim() === '') return true;
+    else return false;
+  };
+  // -----------------
+
+  // Create object from request inputs
+  const newUser = {
+    email: req.body.email,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword,
+    username: req.body.username
+  };
+
+  // Push errors if any
+  let errors = {};
+
+  // Check mail
+  if (isEmpty(newUser.email)) {
+    errors.email = 'Must not be empty';
+  } else if (!isEmail(newUser.email)) {
+    errors.email = 'Must be a valid email address';
+  }
+
+  // Check password
+  if (isEmpty(newUser.password)) errors.password = 'Must not be empty';
+  if (newUser.password !== newUser.confirmPassword)
+    errors.confirmPassword = 'Passwords must match';
+
+  // Check username
+  if (isEmpty(newUser.username)) errors.username = 'Must not be empty';
+
+  // Throw bad code if any error ocurred
+  if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+  
+
+  let token, userId;
+  db.doc(`/users/${newUser.username}`)
+    .get()
+    .then((doc) => {
+      // UserID must be unique
+      if (doc.exists) {
+        // Bad request - User exists
+        return res.status(400).json({ username: 'This username is already taken' });
+      } else {
+        // Register user
+        return firebase
+          .auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
+      }
+    })
+    // User was created, return access token
+    .then((data) => {
+      userId = data.user.uid;
+      return data.user.getIdToken();
+    })
+    .then((idToken) => {
+      token = idToken;
+      // We need more info than what firebase auth needs
+      // We store it in firestore /usuarios/
+      const newUserInFirestore = {
+        biografia: req.body.biografia,
+        edad: req.body.edad,
+        imagen: req.body.imagen,
+        nombre: req.body.nombre,
+        password: newUser.password,
+        username: newUser.username,
+        userId: userId,
+      }
+
+      return db.doc(`/usuarios/${newUser.username}`).set(newUserInFirestore);
+    })
+    // Successfully created code and token to the user
+    .then(() => {
+      return res.status(201).json({ token });
+    })
+    // Log error and send bad status code
+    .catch((err) => {
+      console.error(err);
+      if (err.code === 'auth/email-already-in-use') {
+        return res.status(400).json({ email: 'Email is already is use' });
+      } else {
+        return res.status(500).json({ error: err.code });
+      }
+    });
+});
+
+
+// Login route
+app.post('/login', (req, res) => {
+  // HELPER FUNCTION TO VALIDATE
+  // Email cannot be empty
+  const isEmpty = (string) => {
+    // If only spaces it is deleted aswell
+    if (string.trim() === '') return true;
+    else return false;
+  };
+
+  const user = {
+    email: req.body.email,
+    password: req.body.password
+  };
+
+  // Store errors for response
+  let errors = {};
+
+  // Validate input email and password
+  if (isEmpty(user.email)) errors.email = 'Must not be empty';
+  if (isEmpty(user.password)) errors.password = 'Must not be empty';
+
+  // Return errors and error code
+  if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(user.email, user.password)
+    .then((data) => {
+      return data.user.getIdToken();
+    })
+    .then((token) => {
+      return res.json({ token });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.code === 'auth/wrong-password') {
+        return res
+          .status(403)
+          .json({ general: 'Wrong credentials, please try again' });
+      } else return res.status(500).json({ error: err.code });
+    });
+});
+
  // CREATE a new user with a POST request. Takes input from body in JSON format.
  app.post('/createUser', (req, res) => {
   // Take data from request body
@@ -615,67 +759,6 @@ app.get('/ecopunto', (request, response) => {
         
 }) 
 
-// Signup route
-app.post('/signup', (req, res) => {
-  const newUser = {
-    email: req.body.email,
-    password: req.body.password,
-    confirmPassword: req.body.confirmPassword,
-    username: req.body.username
-  };
-
-
-  // TODO: validate data
-
-  let token, userId;
-  db.doc(`/users/${newUser.username}`)
-    .get()
-    .then((doc) => {
-      // UserID must be unique
-      if (doc.exists) {
-        // Bad request - User exists
-        return res.status(400).json({ username: 'This username is already taken' });
-      } else {
-        // Register user
-        return firebase
-          .auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
-      }
-    })
-    // User was created, return access token
-    .then((data) => {
-      userId = data.user.uid;
-      return data.user.getIdToken();
-    })
-    .then((idToken) => {
-      token = idToken;
-      // We need more info than what firebase auth needs
-      // We store it in firestore /usuarios/
-      const newUserInFirestore = {
-        biografia: req.body.biografia,
-        edad: req.body.edad,
-        imagen: req.body.imagen,
-        nombre: req.body.nombre,
-        password: newUser.password,
-        username: newUser.username,
-        userId: userId,
-      }
-
-      return db.doc(`/usuarios/${newUser.username}`).set(newUserInFirestore);
-    })
-    // Successfully created code and token to the user
-    .then(() => {
-      return res.status(201).json({ token });
-    })
-    // Log error and send bad status code
-    .catch((err) => {
-      console.error(err);
-      if (err.code === 'auth/email-already-in-use') {
-        return res.status(400).json({ email: 'Email is already is use' });
-      } else {
-        return res.status(500).json({ error: err.code });
-      }
-    });
-});
 
 
 // https://url.com/api/....
