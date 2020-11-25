@@ -624,8 +624,6 @@ app.post('/signup', (req, res) => {
     username: req.body.username
   };
 
-  console.log("hEEEEEY")
-  console.log(newUser.email)
 
   // TODO: validate data
 
