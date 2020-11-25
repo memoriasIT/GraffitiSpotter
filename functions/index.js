@@ -42,6 +42,51 @@ const { toNamespacedPath } = require('path');
 const DataTransform = require("node-json-transform").DataTransform;
 
 
+//  ███╗   ███╗██╗██████╗ ██████╗ ██╗     ███████╗██╗    ██╗ █████╗ ██████╗ ███████╗
+//  ████╗ ████║██║██╔══██╗██╔══██╗██║     ██╔════╝██║    ██║██╔══██╗██╔══██╗██╔════╝
+//  ██╔████╔██║██║██║  ██║██║  ██║██║     █████╗  ██║ █╗ ██║███████║██████╔╝█████╗  
+//  ██║╚██╔╝██║██║██║  ██║██║  ██║██║     ██╔══╝  ██║███╗██║██╔══██║██╔══██╗██╔══╝  
+//  ██║ ╚═╝ ██║██║██████╔╝██████╔╝███████╗███████╗╚███╔███╔╝██║  ██║██║  ██║███████╗
+//  ╚═╝     ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+
+const AuthenticationMiddleware = (req, res, next) => {
+
+  let idToken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else {
+    console.error('No token found');
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+  
+  // A token was received, verify the token was issued by us
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      req.user = decodedToken;
+      // console.log(decodedToken);
+      return db
+        .collection('usuarios')
+        .where('userId', '==', req.user.uid)
+        .limit(1)
+        .get();
+    })
+    .then((data) => {
+      req.user.username = data.docs[0].data().username;
+      return next();
+    })
+    // TODO also catch TypeError when no user found: Error while verifying token  TypeError: Cannot read property 'data' of undefined
+    .catch((err) => { // not valid, blacklisted, etc.
+      console.error('Error while verifying token ', err);
+      return res.status(403).json(err);
+    });
+};
+
+
 //  ██╗   ██╗███████╗███████╗██████╗ ███████╗
 //  ██║   ██║██╔════╝██╔════╝██╔══██╗██╔════╝
 //  ██║   ██║███████╗█████╗  ██████╔╝███████╗
@@ -287,7 +332,13 @@ app.delete('/deleteUser', (req, res) => {
   })
 })
 
-// COMMENTS
+//   ██████╗ ██████╗ ███╗   ███╗███╗   ███╗███████╗███╗   ██╗████████╗███████╗
+//  ██╔════╝██╔═══██╗████╗ ████║████╗ ████║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
+//  ██║     ██║   ██║██╔████╔██║██╔████╔██║█████╗  ██╔██╗ ██║   ██║   ███████╗
+//  ██║     ██║   ██║██║╚██╔╝██║██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   ╚════██║
+//  ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   ███████║
+//   ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
+
 
 // CREATE a new user with a POST request. Takes input from body in JSON format.
 app.post('/createComment', (req, res) => {
@@ -369,16 +420,22 @@ app.delete('/deleteComment', (req, res) => {
   })
 })
 
-/* 
- * Graffitis 
- */
+
+
+//   ██████╗ ██████╗  █████╗ ███████╗███████╗██╗████████╗██╗███████╗
+//  ██╔════╝ ██╔══██╗██╔══██╗██╔════╝██╔════╝██║╚══██╔══╝██║██╔════╝
+//  ██║  ███╗██████╔╝███████║█████╗  █████╗  ██║   ██║   ██║███████╗
+//  ██║   ██║██╔══██╗██╔══██║██╔══╝  ██╔══╝  ██║   ██║   ██║╚════██║
+//  ╚██████╔╝██║  ██║██║  ██║██║     ██║     ██║   ██║   ██║███████║
+//   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚═╝   ╚═╝   ╚═╝╚══════╝
 
 
  // CREATE a new grafitti with a POST request. Takes input from body in JSON format.
- app.post('/createGraffiti', (req, res) => {
+ // Requires access token, refer to function AuthenticationMiddleware
+ app.post('/createGraffiti', AuthenticationMiddleware, (req, res) => {
   // Take data from request body
   const newGraffiti = {
-    autor: req.body.autor,
+    autor: req.user.username,
     commentCount: req.body.commentCount,
     descripcion: req.body.descripcion,
     estado: req.body.estado,
@@ -405,7 +462,7 @@ app.delete('/deleteComment', (req, res) => {
 
 
 // READ all graffitis
-app.get('/graffitis', (req, res) => {
+app.get('/graffitis',  (req, res) => {
   admin
   .firestore()
   .collection('graffitis')
@@ -558,6 +615,8 @@ app.post('/graffiti/:graffitiId/unlikeGraffiti', (request, response) => {
         response.status(500).json({error: err.code});
     })
 });
+
+
 // ██████╗ ██████╗ ███████╗███╗   ██╗    ██████╗  █████╗ ████████╗ █████╗ 
 //██╔═══██╗██╔══██╗██╔════╝████╗  ██║    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
 //██║   ██║██████╔╝█████╗  ██╔██╗ ██║    ██║  ██║███████║   ██║   ███████║
