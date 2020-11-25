@@ -124,6 +124,35 @@ exports.login = (req, res) => {
   }
 
 
+exports.getDetailsOfUser = (req, res) => {
+    let userData = {};
+    console.log(req.user);
+    db.doc(`/usuarios/${req.user.username}`)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          userData.credentials = doc.data();
+          // Get all graffitis of the user
+          return db
+            .collection('graffitis')
+            .where('autor', '==', req.user.username)
+            .get();
+        }
+      })
+      // Add graffitis of the user to a list
+      .then((data) => {
+        userData.graffitis = [];
+        data.forEach((doc) => {
+          userData.graffitis.push(doc.data());
+        });
+        return res.json(userData);
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({ error: err.code });
+      });
+  };
+
 exports.listUsers = (req, res) => {
     admin
     .firestore()

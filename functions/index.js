@@ -5,6 +5,7 @@ const { getAllGraffitis, postGraffiti } = require('./handlers/graffitis');
 const { 
   signup,
   login,
+  getDetailsOfUser,
   listUsers,
   updateUser,
   deleteUser,
@@ -45,6 +46,7 @@ app.post('/signup', signup);
 app.post('/login', login);
 app.get('/users', AuthenticationMiddleware, listUsers);
 app.put('/updateUser', AuthenticationMiddleware, updateUser);
+app.get('/user', AuthenticationMiddleware, getDetailsOfUser);
 app.delete('/deleteUser', AuthenticationMiddleware, deleteUser);
 
 
