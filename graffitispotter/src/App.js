@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import home from './pages/home';
 import login from './pages/Login';
 import signup from './pages/signup';
+import ListOfUsers from './pages/allUsers';
 
 
 const theme = createMuiTheme({
@@ -40,6 +41,7 @@ function App() {
                 <Route exact path="/" component={home} />
                 <Route exact path="/login" component={login} />
                 <Route exact path="/signup" component={signup} />
+                <Route exact path="/listOfUsers" component={ListOfUsers} />
               </Switch>
             </Container>
           </Router>
