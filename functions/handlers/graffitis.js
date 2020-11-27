@@ -58,4 +58,127 @@ exports.postGraffiti = (req, res) => {
       res.status(500).json({error: 'Something went wrong'});
       console.error(err);
     })
+}
+
+// UPDATE an existing graffiti given a id
+exports.updateGraffiti =  (req, res) => {
+  // Take data from request body
+  const updateGraffiti = {
+    autor: req.body.autor,
+    commentCount: req.body.commentCount,
+    descripcion: req.body.descripcion,
+    estado: req.body.estado,
+    fecha: req.body.fecha,
+    imagen: req.body.imagen,
+    likeCount: req.body.likeCount,
+    localizacion: req.body.localizacion,
+    tematica: req.body.tematica,
+    titulo: req.body.titulo,
   }
+
+  // Add a document to the collection with id of the graffiti, use object updateGraffiti
+  db.collection('graffitis').doc(req.body.id).update(updateGraffiti)
+  .then (doc => {
+     res.json({message: 'Graffiti updated successfully'});
+     return res;
+  })
+  .catch(err => {
+    res.status(500).json({error: 'Something went wrong'});
+    console.error(err);
+  })
+}
+
+// DELETE an existing graffiti given a id
+exports.deleteGraffiti = (req, res) => {
+  // Deletes a document with the id provided in body request
+  db.collection('graffitis').doc(req.body.id).delete()
+  .then (doc => {
+     res.json({message: 'Graffiti deleted successfully'});
+     return res;
+  })
+  .catch(err => {
+    res.status(500).json({error: 'Something went wrong'});
+    console.error(err);
+  })
+}
+
+//Like a graffiti
+exports.likeGraffiti = (request, response) => {
+  const likeDoc = db.collection('likes').where('usuario', '==', request.body.username)
+      .where('graffiti', '==', request.params.graffitiId).limit(1);
+
+  const graffitiDoc = db.doc(`/graffitis/${request.params.graffitiId}`);
+
+  let graffitiData;
+
+  graffitiDoc.get()
+    .then(doc => {
+        if(doc.exists) {
+            graffitiData = doc.data();
+            graffitiData.graffitiId = doc.id;
+            return likeDoc.get();
+        } else {
+            return response.status(404).json({error : 'Graffiti no encontrado'});
+        }
+    })
+    .then(data => {
+        if(data.empty) {
+            return db.collection('likes').add({
+                graffiti : request.params.graffitiId,
+                usuario: request.body.username
+            })
+            .then(() => {
+                graffitiData.likeCount++
+                return graffitiDoc.update({likeCount: graffitiData.likeCount})
+            })
+            .then(() => {
+                return response.json(graffitiData);
+            })
+        } else {
+            return response.status(400).json({error: 'Graffiti already liked'});
+        }
+    })
+    .catch(err => {
+        console.error(err)
+        return response.status(500).json({error: err.code});
+    })
+}
+
+//Unlike a graffiti
+exports.unlikeGraffiti = (request, response) => {
+  const likeDoc = db.collection('likes').where('usuario', '==', request.body.username)
+  .where('graffiti', '==', request.params.graffitiId).limit(1);
+
+ const graffitiDoc = db.doc(`/graffitis/${request.params.graffitiId}`);
+
+ let graffitiData;
+
+ graffitiDoc.get()
+    .then(doc => {
+        if(doc.exists) {
+            graffitiData = doc.data();
+            graffitiData.graffitiId = doc.id;
+            return likeDoc.get();
+        } else {
+            return response.status(404).json({error : 'Graffiti no encontrado'});
+        }
+    })
+    .then(data => {
+        if(!data.empty) {
+            return db.doc(`/likes/${data.docs[0].id}`).delete()
+             .then(() =>{
+                 graffitiData.likeCount--;
+                 return graffitiDoc.update({likeCount: graffitiData.likeCount});
+             })
+             .then(() => {
+                 response.json(graffitiData);
+             })
+        } else {
+            return response.status(400).json({error: 'Graffiti not liked'});
+        }
+    })
+    .catch(err => {
+        console.error(err)
+        response.status(500).json({error: err.code});
+    })
+}
