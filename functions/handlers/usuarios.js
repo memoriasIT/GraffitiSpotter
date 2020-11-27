@@ -5,6 +5,9 @@ const firebase = require('firebase');
 var firebaseConfig = require('../util/config');
 firebase.initializeApp(firebaseConfig);
 
+// Allow undefined elements in the database
+db.settings({ ignoreUndefinedProperties: true });
+
 const { validateSignupData, validateLoginData } = require('../util/validators');
 
 // Function to remove empty elements from a JSON object

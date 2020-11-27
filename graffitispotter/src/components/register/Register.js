@@ -58,8 +58,10 @@ class Register extends Component {
         }
     }
 
-    login = (e) => {
+    register = (e) => {
         const { formData } = this.state;
+
+
         var registerConfig = {
             method: 'post',
             url: 'http://localhost:5000/thegraffitispotter/us-central1/api/signup',
@@ -96,14 +98,21 @@ class Register extends Component {
         const { errors, formSubmitted } = this.state;
 
         return (
-            <div className="Login">
+            <div className="Register">
                 <Row>
-                    <form onSubmit={this.login}>
+                    <form onSubmit={this.register}>
                         <FormGroup controlId="email" validationState={ formSubmitted ? (errors.email ? 'error' : 'success') : null }>
                             <ControlLabel>Email</ControlLabel>
                             <FormControl type="text" name="email" placeholder="Enter your email" onChange={this.handleInputChange} />
                         { errors.email &&
                             <HelpBlock>{errors.email}</HelpBlock>
+                        }
+                        </FormGroup>
+                        <FormGroup controlId="username" validationState={ formSubmitted ? (errors.username ? 'error' : 'success') : null }>
+                            <ControlLabel>Username</ControlLabel>
+                            <FormControl type="text" name="username" placeholder="Enter your username" onChange={this.handleInputChange} />
+                        { errors.username &&
+                            <HelpBlock>{errors.username}</HelpBlock>
                         }
                         </FormGroup>
                         <FormGroup controlId="password" validationState={ formSubmitted ? (errors.password ? 'error' : 'success') : null }>
@@ -113,7 +122,14 @@ class Register extends Component {
                             <HelpBlock>{errors.password}</HelpBlock>
                         }
                         </FormGroup>
-                        <Button type="submit" bsStyle="primary">Sign-In</Button>
+                        <FormGroup controlId="confirmPassword" validationState={ formSubmitted ? (errors.confirmPassword ? 'error' : 'success') : null }>
+                            <ControlLabel>Confirm Password</ControlLabel>
+                            <FormControl type="password" name="confirmPassword" placeholder="Re-enter your password" onChange={this.handleInputChange} />
+                        { errors.confirmPassword &&
+                            <HelpBlock>{errors.confirmPassword}</HelpBlock>
+                        }
+                        </FormGroup>
+                        <Button type="submit" bsStyle="primary">Register</Button>
                     </form>
                 </Row>
             </div>
