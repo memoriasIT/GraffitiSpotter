@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import { Row, FormGroup, FormControl, ControlLabel, Button, HelpBlock } from 'react-bootstrap';
 import { isEmail, isEmpty, isLength, isContainWhiteSpace } from '../shared/validator';
-
+import Cookies from 'universal-cookie';
 
 
 class Login extends Component {
@@ -77,7 +77,9 @@ class Login extends Component {
             // No errors found, login
             axios(loginConfig)
                 .then(function (response) {
-                console.log(JSON.stringify(response.data));
+                    console.log(JSON.stringify(response.data));
+                    const cookies = new Cookies();
+                    cookies.set('access-token', response.data.token, {'path' : '/'});
                 })
                 .catch(function (error) {
                 console.log(error);

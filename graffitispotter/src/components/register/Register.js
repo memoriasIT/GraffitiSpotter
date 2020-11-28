@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import { Row, FormGroup, FormControl, ControlLabel, Button, HelpBlock } from 'react-bootstrap';
 import { isEmail, isEmpty, isLength, isContainWhiteSpace } from '../shared/validator';
-
+import Cookies from 'universal-cookie';
 
 
 class Register extends Component {
@@ -79,7 +79,9 @@ class Register extends Component {
             // No errors found, register
             axios(registerConfig)
                 .then(function (response) {
-                console.log(JSON.stringify(response.data));
+                    console.log(JSON.stringify(response.data));
+                    const cookies = new Cookies();
+                    cookies.set('access-token', response.data.token, {'path' : '/'});
                 })
                 .catch(function (error) {
                 console.log(error);
