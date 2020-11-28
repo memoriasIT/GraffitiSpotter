@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import home from './pages/home';
 import login from './pages/Login';
 import signup from './pages/signup';
-import ListOfUsers from './pages/allUsers';
+import ListOfUsers from './components/listOfUsers/ListOfUsers';
 
 
 const theme = createMuiTheme({
