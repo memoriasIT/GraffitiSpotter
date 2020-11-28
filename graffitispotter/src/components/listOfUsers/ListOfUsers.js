@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 class ListOfUsers extends Component {
     constructor(props) {
@@ -12,7 +13,9 @@ class ListOfUsers extends Component {
     }
   
   componentDidMount() {
-    // var Bearer = 'Bearer ' + 
+    // Get access token from cookie NEEDS LOGIN OR REGISTER
+    const cookies = new Cookies();
+    var Bearer = 'Bearer ' + cookies.get('access-token');
 
     var config = {
     method: 'get',
@@ -20,7 +23,7 @@ class ListOfUsers extends Component {
         headers: { 
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept':'application/json',
-            'Authorization': "Bearer"
+            'Authorization': Bearer
         }
     };
 
@@ -43,6 +46,7 @@ class ListOfUsers extends Component {
     const { isLoaded, users } = this.state;
       return (
         <React.Fragment>
+            <h3>Se puede ver más info en la consola, esta página requiere login/registro y accesstoken mediante la cookie 'access-token'</h3>
         {isLoaded ? 
             
                 <ul className="list-group">
