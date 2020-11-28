@@ -10,8 +10,12 @@ class home extends Component {
                 <br></br>
                 <Link to='/signup'>register</Link>
                 <br></br>
-                <Link to='/listOfUsers'>listOfUsers</Link>
-
+                <Link to='/listOfUsers'>list Of Users</Link>
+                <br></br>
+                <Link to='/user'>User Details</Link>
+                <br></br>
+                <Link to='/deleteUser'>deleteUser</Link>
+                // TODO UPDATE USER PAGE
             </div>
         )
     }

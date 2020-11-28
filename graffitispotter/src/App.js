@@ -11,6 +11,8 @@ import home from './pages/home';
 import LoginPage from './pages/Login';
 import SignupPage from './pages/signup';
 import UserDetails from './pages/user';
+import deleteUser from './pages/deleteUser';
+import updateUser from './pages/deleteUser';
 import ListOfUsers from './components/listOfUsers/ListOfUsers';
 
 
@@ -44,6 +46,8 @@ function App() {
                 <Route exact path="/signup" component={SignupPage} />
                 <Route exact path="/listOfUsers" component={ListOfUsers} />
                 <Route exact path="/user" component={UserDetails} />
+                <Route exact path="/deleteUser" component={deleteUser} />
+                <Route exact path="/updateUser" component={updateUser} /> // TODO THIS PAGE
               </Switch>
             </Container>
           </Router>
