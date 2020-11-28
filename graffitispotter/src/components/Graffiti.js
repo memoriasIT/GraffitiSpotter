@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
-//import dayjs from 'dayjs'
-//import relativeTime from 'dayjs/plugin/relativeTime'
-//Falta rehacer la fecha para usar lo que está comentado
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 //MUI
 import Card from '@material-ui/core/Card';
@@ -30,7 +29,7 @@ const styles = {
 
 class Graffiti extends Component {
     render(){
-        //dayjs.extend(relativeTime)
+        dayjs.extend(relativeTime)
         const {
             classes,
             graffiti : {
@@ -62,8 +61,7 @@ class Graffiti extends Component {
                     {titulo}
                     </Typorgraphy>
                     <Typography variant="body2" color="textSecondary">{
-                        Date(fecha.seconds * 1000)
-                        //dayjs(createdAt).fromNow()
+                        dayjs(fecha).fromNow()
                     }</Typography>
                     <Typography variant="body1">{descripcion}</Typography>
                 </CardContent>
