@@ -12,7 +12,7 @@ import LoginPage from './pages/Login';
 import SignupPage from './pages/signup';
 import UserDetails from './pages/user';
 import deleteUser from './pages/deleteUser';
-import updateUser from './pages/deleteUser';
+import updateUser from './pages/updateUser';
 import ListOfUsers from './components/listOfUsers/ListOfUsers';
 
 
