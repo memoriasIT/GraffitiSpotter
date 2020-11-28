@@ -13,7 +13,7 @@ exports.getAllGraffitis = (req, res) => {
         graffitis.push({
           id: doc.id,
           body: doc.data().body,
-          autor: doc.data().autor.id,
+          autor: doc.data().autor,
           commentCount: doc.data().commentCount,
           descripcion: doc.data().descripcion,
           estado: doc.data().estado,
@@ -171,7 +171,7 @@ exports.unlikeGraffiti = (request, response) => {
                  return graffitiDoc.update({likeCount: graffitiData.likeCount});
              })
              .then(() => {
-                 response.json(graffitiData);
+                 return response.json(graffitiData);
              })
         } else {
             return response.status(400).json({error: 'Graffiti not liked'});

@@ -140,6 +140,9 @@ exports.getDetailsOfUser = (req, res) => {
             .collection('graffitis')
             .where('autor', '==', req.user.username)
             .get();
+        } else {
+          // Bad request - User does not exist
+          return res.status(400).json({ username: 'This username does nto exists' });
         }
       })
       // Add graffitis of the user to a list
