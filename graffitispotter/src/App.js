@@ -14,6 +14,7 @@ import UserDetails from './pages/user';
 import deleteUser from './pages/deleteUser';
 import updateUser from './pages/updateUser';
 import ListOfUsers from './components/listOfUsers/ListOfUsers';
+import map from './pages/map';
 
 
 const theme = createMuiTheme({
@@ -48,6 +49,7 @@ function App() {
                 <Route exact path="/user" component={UserDetails} />
                 <Route exact path="/deleteUser" component={deleteUser} />
                 <Route exact path="/updateUser" component={updateUser} /> // TODO THIS PAGE
+                <Route exact path="/map" component={map} />
               </Switch>
             </Container>
           </Router>
