@@ -102,9 +102,9 @@ exports.deleteGraffiti = (req, res) => {
   })
 }
 
-//Like a graffiti
+//Like/unlike a graffiti
 exports.likeGraffiti = (request, response) => {
-  const likeDoc = db.collection('likes').where('usuario', '==', request.body.username)
+  const likeDoc = db.collection('likes').where('usuario', '==', request.user.username)
       .where('graffiti', '==', request.params.graffitiId).limit(1);
 
   const graffitiDoc = db.doc(`/graffitis/${request.params.graffitiId}`);
@@ -125,7 +125,7 @@ exports.likeGraffiti = (request, response) => {
         if(data.empty) {
             return db.collection('likes').add({
                 graffiti : request.params.graffitiId,
-                usuario: request.body.username
+                usuario: request.user.username
             })
             .then(() => {
                 graffitiData.likeCount++

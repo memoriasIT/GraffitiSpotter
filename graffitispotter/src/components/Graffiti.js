@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
+import Cookies from 'universal-cookie';
+
 const styles = {
     card: {
         display: 'flex',
@@ -33,11 +35,15 @@ const styles = {
 
 class Graffiti extends Component {
     handleLike() {
+        const cookies = new Cookies();
         const id = this.props.graffiti.id;
-        const usuario= {
-            username : "nuevo"
-        }
-        axios.post(`/graffiti/${id}/likeGraffiti`, usuario)
+        var Bearer = 'Bearer ' + cookies.get('access-token');
+        
+        axios.get(`/graffiti/${id}/likeGraffiti`, {
+            headers: {
+              'Authorization': Bearer 
+            }
+          })
         .then(res => {
             console.log(res.data);
             window.location.reload();
