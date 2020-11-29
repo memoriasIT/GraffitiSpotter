@@ -135,7 +135,14 @@ exports.likeGraffiti = (request, response) => {
                 return response.json(graffitiData);
             })
         } else {
-            return response.status(400).json({error: 'Graffiti already liked'});
+          return db.doc(`/likes/${data.docs[0].id}`).delete()
+          .then(() =>{
+              graffitiData.likeCount--;
+              return graffitiDoc.update({likeCount: graffitiData.likeCount});
+          })
+          .then(() => {
+              return response.json(graffitiData);
+          })
         }
     })
     .catch(err => {
@@ -144,41 +151,3 @@ exports.likeGraffiti = (request, response) => {
     })
 }
 
-//Unlike a graffiti
-exports.unlikeGraffiti = (request, response) => {
-  const likeDoc = db.collection('likes').where('usuario', '==', request.body.username)
-  .where('graffiti', '==', request.params.graffitiId).limit(1);
-
- const graffitiDoc = db.doc(`/graffitis/${request.params.graffitiId}`);
-
- let graffitiData;
-
- graffitiDoc.get()
-    .then(doc => {
-        if(doc.exists) {
-            graffitiData = doc.data();
-            graffitiData.graffitiId = doc.id;
-            return likeDoc.get();
-        } else {
-            return response.status(404).json({error : 'Graffiti no encontrado'});
-        }
-    })
-    .then(data => {
-        if(!data.empty) {
-            return db.doc(`/likes/${data.docs[0].id}`).delete()
-             .then(() =>{
-                 graffitiData.likeCount--;
-                 return graffitiDoc.update({likeCount: graffitiData.likeCount});
-             })
-             .then(() => {
-                 return response.json(graffitiData);
-             })
-        } else {
-            return response.status(400).json({error: 'Graffiti not liked'});
-        }
-    })
-    .catch(err => {
-        console.error(err)
-        response.status(500).json({error: err.code});
-    })
-}

@@ -156,7 +156,6 @@ app.get('/graffitis',  getAllGraffitis);
 app.put('/updateGraffiti', updateGraffiti);
 app.delete('/deleteGraffiti', deleteGraffiti);
 app.post('/graffiti/:graffitiId/likeGraffiti', likeGraffiti);
-app.post('/graffiti/:graffitiId/unlikeGraffiti', unlikeGraffiti);
 
 
 // ██████╗ ██████╗ ███████╗███╗   ██╗    ██████╗  █████╗ ████████╗ █████╗ 
