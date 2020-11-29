@@ -41,6 +41,9 @@ class Graffiti extends Component {
         .then(res => {
             console.log(res.data);
         })
+        .catch(err => {
+            console.log(err.data);
+        })
     };
     render(){
         dayjs.extend(relativeTime)
@@ -79,7 +82,7 @@ class Graffiti extends Component {
                     }</Typography>
                     <Typography variant="body1">{descripcion}</Typography>
                     <Typography variant="body1" color="textSecondary">Likes: {likeCount}</Typography>
-                    <IconButton type="button" onClick={() => this.handleLike() } type="submit" color="secondary" aria-label="add an alarm">
+                    <IconButton type="button" onClick={() => this.handleLike() } type="submit" color="secondary" aria-label="like">
                         <FavoriteIcon />
                     </IconButton>
                 </CardContent>
