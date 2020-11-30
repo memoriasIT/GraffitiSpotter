@@ -5,6 +5,7 @@ import {
   TileLayer,
   Marker,
   useMap,
+  Popup,
 } from "react-leaflet";
 import proj4 from "proj4";
 
@@ -14,6 +15,7 @@ const Mapa = () => {
 
   const [current, setCurrent] = useState(); 
   const [puntos, setPuntos] = useState([]);
+  const [info, setInfo] = useState([]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function(pos){
@@ -27,6 +29,7 @@ const Mapa = () => {
       })
       .then((res) => {
         setPuntos([proj4('EPSG:25830', 'EPSG:4326', [res.data[0].location.lon, res.data[0].location.lat]).reverse()])
+        setInfo([res.data[0].id, res.data[0].recogida])
         // guardas en Mpos los datos que recibes del servidor
         //setPuntos([[36.056464,36.056464]]);
         console.log("LOS DATOS");
@@ -43,7 +46,7 @@ const Mapa = () => {
 
   function ChangeView({ zoom }) {
     const map = useMap();
-    map.setView(current, zoom);
+    map.setView(current, zoom);// A pretty CSS3 popup. <br /> Easily customizable.
     return null;
   }
 
@@ -54,7 +57,11 @@ const Mapa = () => {
           <ChangeView zoom={15} /> 
           }
           {puntos.map((p) => (
-            <Marker position={p}></Marker>
+            <Marker position={p}>
+              <Popup>
+                {"Contenedor de papel/cartón más cercano \n ID: "+ info[0] +" \n Tipo de recogida: " + info[1]}
+              </Popup>
+            </Marker>
           ))}
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
