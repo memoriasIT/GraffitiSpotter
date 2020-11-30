@@ -6,7 +6,8 @@ import Graffiti from '../components/Graffiti';
 
 class home extends Component {
     state = {
-        graffitis: null
+        graffitis: null,
+        comments: null
     }
     componentDidMount(){
         axios.get('/graffitis')
@@ -17,12 +18,24 @@ class home extends Component {
                 })
             })
         .catch(err => console.log(err));
+        axios.get('/comments')
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    comments: res.data
+                })
+            })
+        .catch(err => console.log(err));
     }
     render() {
         let recentGraffitisMarkup = this.state.graffitis ? (
             this.state.graffitis.map((graffiti) => 
                 <Graffiti key={graffiti.id} graffiti={graffiti}/> 
                 //<p>{graffiti.titulo}</p>
+            )) : <p>Loading...</p>
+        let recentComments = this.state.comments ? (
+            this.state.comments.map((comment) =>
+                <p>{comment.comentario}</p>
             )) : <p>Loading...</p>
         return (
             <div>
@@ -42,6 +55,7 @@ class home extends Component {
                     {recentGraffitisMarkup}
                 </Grid>
             </Grid>
+                {recentComments}
             </div>
         );
     }
