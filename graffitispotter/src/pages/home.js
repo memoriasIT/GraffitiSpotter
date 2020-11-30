@@ -49,6 +49,8 @@ class home extends Component {
                 <Link to='/user'>User Details</Link>
                 <br></br>
                 <Link to='/deleteUser'>deleteUser</Link>
+                <br></br>
+                <Link to='/map'>Mapa que muestra el contenedor de papel más cercano</Link>
                 // TODO UPDATE USER PAGE
             <Grid container spaceing={16}>
                 <Grid item sm={8} xs={12}> 

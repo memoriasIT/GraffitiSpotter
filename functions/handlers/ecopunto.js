@@ -38,13 +38,13 @@ exports.ecopunto = (request, response) => {
             
             var x = array[i].location.lon;
             var y = array[i].location.lat;
-            let distancia = Math.sqrt(Math.pow((request.body.lon - x), 2) + Math.pow((request.body.lat - y), 2));
+            let distancia = Math.sqrt(Math.pow((request.query.lat - x), 2) + Math.pow((request.query.lon - y), 2));
 
             if(i === 0){
               temp = distancia;
               aux.push(array[i]);
             }else{
-              if (temp < distancia) {
+              if (temp > distancia) {
                 temp = distancia;
                 aux = [];
                 aux.push(array[i]);

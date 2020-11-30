@@ -89,8 +89,7 @@ app.post('/createGraffiti', AuthenticationMiddleware, postGraffiti);
 app.get('/graffitis',  getAllGraffitis);
 app.put('/updateGraffiti', updateGraffiti);
 app.delete('/deleteGraffiti', deleteGraffiti);
-app.post('/graffiti/:graffitiId/likeGraffiti', likeGraffiti);
-app.post('/graffiti/:graffitiId/unlikeGraffiti', unlikeGraffiti);
+app.get('/graffiti/:graffitiId/likeGraffiti', AuthenticationMiddleware, likeGraffiti);
 
 
 // ██████╗ ██████╗ ███████╗███╗   ██╗    ██████╗  █████╗ ████████╗ █████╗ 
