@@ -19,11 +19,10 @@ const Mapa = () => {
     navigator.geolocation.getCurrentPosition(function(pos){
       setCurrent({lat: pos.coords.latitude, lng: pos.coords.longitude});
       var posiA25830 = proj4('EPSG:4326', 'EPSG:25830', [pos.coords.longitude, pos.coords.latitude])//Pasa la localización del usuario de EPGS4326 A 25830 (CON LO QUE TRABAJA EL JSON)
-      console.log(posiA25830);
       axios.get('http://localhost:5000/thegraffitispotter/us-central1/api/container', {
         params:{
-          "lat": 377961.85, //posiA25830[0],//  4061985.986 this.state.userLat, 
-          "lon": 4052814.75//posiA25830[1], // pos.coords.longitude  369689.949, this.state.userLon, 
+          "lat": posiA25830[0],//  4061985.986 this.state.userLat, 
+          "lon": posiA25830[1], // pos.coords.longitude  369689.949, this.state.userLon, 
         },
       })
       .then((res) => {
