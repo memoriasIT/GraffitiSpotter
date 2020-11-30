@@ -47,6 +47,7 @@
   },
   "proxy": "https://us-central1-thegraffitispotter.cloudfunctions.net/api",
   "devDependencies": {
-    "proj4": "^2.6.3"
+    "proj4": "^2.6.3",
+    "react-share": "^4.3.1"
   }
 }

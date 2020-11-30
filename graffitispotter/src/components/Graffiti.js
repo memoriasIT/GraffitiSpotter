@@ -16,6 +16,10 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import Cookies from 'universal-cookie';
+import {
+      TwitterShareButton,
+      TwitterIcon,
+} from "react-share";
 
 const styles = {
     card: {
@@ -92,6 +96,15 @@ class Graffiti extends Component {
                     <IconButton type="button" onClick={() => this.handleLike() } type="submit" color="secondary" aria-label="like">
                         <FavoriteIcon />
                     </IconButton>
+                    <div>
+                    <TwitterShareButton
+                        title={titulo}
+                        url={imagen}
+                        hashtags= {["GraffitiSpotter", "Graffiti"]}
+                    >
+                    <TwitterIcon size={32} round />
+                    </TwitterShareButton>
+                    </div>
                 </CardContent>
             </Card>
         )
