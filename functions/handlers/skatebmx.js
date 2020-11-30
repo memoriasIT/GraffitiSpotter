@@ -35,7 +35,7 @@ exports.skatebmx = (request, response) => {
             for (var i = 0; i < array.length; i++) {
               var x = array[i].location.lon;
               var y = array[i].location.lat;
-              let distancia = Math.sqrt(Math.pow((request.body.lon - x), 2) + Math.pow((request.body.lat - y), 2));
+              let distancia = Math.sqrt(Math.pow((request.body.lat - x), 2) + Math.pow((request.body.lon - y), 2));
                if (distancia <= request.body.meters) {
                    aux.push(array[i]);
                }
