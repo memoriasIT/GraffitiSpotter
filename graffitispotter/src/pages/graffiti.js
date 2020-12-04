@@ -16,13 +16,13 @@ class graffiti extends Component {
                     graffiti: res.data
                 })
                 .catch(err => console.log(err));
-            })
+            }).catch(err => console.log(err));
+
     }
     render(){
         let GraffitiMarkup = this.state.graffiti ? (
-            this.state.graffiti.map((graffiti) => 
-                <GraffitiDetails graffiti={graffiti} />
-            )) : <p>Loading...</p>
+                <GraffitiDetails graffiti={this.state.graffiti} />
+            ) : <p>Loading...</p>
 
         return (
             <Grid container spaceing={16}>

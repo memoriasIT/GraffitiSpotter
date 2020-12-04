@@ -43,13 +43,13 @@ class GraffitiDetails extends Component {
             }
         } = this.props
         return(
-            <div>
+        <React.Fragment>
             <Typorgraphy variant="h5" >{titulo}</Typorgraphy>
             <Typography variant="body2" color="textSecondary">{
                 dayjs(fecha).fromNow()
             }</Typography>
             <Typography variant="body1">{descripcion}</Typography>
-            </div>
+        </React.Fragment>
         )
     }
 }

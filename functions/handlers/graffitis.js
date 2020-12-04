@@ -39,9 +39,7 @@ exports.getGraffiti = (req, res) => {
     .doc(req.params.graffitiId)
     .get()
     .then((doc) => {
-      let graffitis = [];
-        // Push an object to response with all graffiti parameters
-        graffitis.push({
+        const graffiti = {
           id: doc.id,
           body: doc.data().body,
           autor: doc.data().autor,
@@ -54,10 +52,10 @@ exports.getGraffiti = (req, res) => {
           localizacion: doc.data().localizacion,
           tematica: doc.data().tematica,
           titulo: doc.data().titulo,
-        });
+        }
 
       // Give response in JSON format
-      return res.json(graffitis);
+      return res.json(graffiti);
     }) 
     .catch(err => console.error(err));
 }
