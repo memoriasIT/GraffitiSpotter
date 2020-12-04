@@ -30,7 +30,38 @@ exports.getAllGraffitis = (req, res) => {
       return res.json(graffitis);
     })
     .catch(err => console.error(err));
-  }
+}
+
+exports.getGraffiti = (req, res) => {
+    admin
+    .firestore()
+    .collection('graffitis')
+    .doc(req.params.graffitiId)
+    .get()
+    .then((doc) => {
+      let graffitis = [];
+        // Push an object to response with all graffiti parameters
+        graffitis.push({
+          id: doc.id,
+          body: doc.data().body,
+          autor: doc.data().autor,
+          commentCount: doc.data().commentCount,
+          descripcion: doc.data().descripcion,
+          estado: doc.data().estado,
+          fecha: doc.data().fecha,
+          imagen: doc.data().imagen,
+          likeCount: doc.data().likeCount,
+          localizacion: doc.data().localizacion,
+          tematica: doc.data().tematica,
+          titulo: doc.data().titulo,
+        });
+
+      // Give response in JSON format
+      return res.json(graffitis);
+    }) 
+    .catch(err => console.error(err));
+}
+
 
 
 exports.postGraffiti = (req, res) => {

@@ -15,6 +15,7 @@ import deleteUser from './pages/deleteUser';
 import updateUser from './pages/updateUser';
 import ListOfUsers from './components/listOfUsers/ListOfUsers';
 import map from './pages/map';
+import graffiti from './pages/graffiti';
 
 
 const theme = createMuiTheme({
@@ -50,6 +51,7 @@ function App() {
                 <Route exact path="/deleteUser" component={deleteUser} />
                 <Route exact path="/updateUser" component={updateUser} /> // TODO THIS PAGE
                 <Route exact path="/map" component={map} />
+                <Route path="/graffitis/:id" component={graffiti} />
               </Switch>
             </Container>
           </Router>

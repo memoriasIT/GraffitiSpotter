@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 
 const { 
     getAllGraffitis, 
+    getGraffiti,
     postGraffiti, 
     updateGraffiti,
     deleteGraffiti,
@@ -87,6 +88,7 @@ app.delete('/deleteComment', deleteComment)
 // Middleware checks for access token, refer to .util/AuthenticationMiddleware.js
 app.post('/createGraffiti', AuthenticationMiddleware, postGraffiti);
 app.get('/graffitis',  getAllGraffitis);
+app.get('/graffitis/:graffitiId',  getGraffiti);
 app.put('/updateGraffiti', updateGraffiti);
 app.delete('/deleteGraffiti', deleteGraffiti);
 app.get('/graffiti/:graffitiId/likeGraffiti', AuthenticationMiddleware, likeGraffiti);
