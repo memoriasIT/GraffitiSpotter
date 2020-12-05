@@ -46,14 +46,14 @@ class GraffitiDetails extends Component {
         <React.Fragment>
 
             <h1>Acciones para este graffiti...</h1>
-            <Link to={`/graffitis/${id}/edit`}>Editar este graffiti</Link>
+            <Link to={`/graffitis/edit/${id}`}>Editar este graffiti</Link>
             <br></br>
-            <Link to={`/graffitis/${id}/delete`}>Eliminar este graffiti</Link>
+            <Link to={`/graffitis/delete/${id}`}>Eliminar este graffiti</Link>
             <br></br>
             <br></br>
 
             <Typorgraphy variant="h2" >{titulo}</Typorgraphy>
-            <img src={imagen} />
+            <img src={imagen} alt={titulo}/>
             <Typography variant="body2" color="textSecondary">Publicado {
                 dayjs(fecha).fromNow()
             } por {autor}</Typography>
