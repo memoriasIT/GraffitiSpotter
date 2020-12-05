@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
-import Graffiti from '../components/Graffiti';
+import Graffiti from '../components/graffiti/Graffiti';
 
 class home extends Component {
     state = {
