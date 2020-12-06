@@ -71,7 +71,7 @@ app.delete('/deleteUser', AuthenticationMiddleware, deleteUser);
 
 app.post('/createComment', AuthenticationMiddleware, createComment)
 app.get('/comments', getComments);
-app.get('/commentsByGraffiti', getCommentsByGraffiti);
+app.get('/commentsByGraffiti/:graffitiId', getCommentsByGraffiti);
 app.put('/updateComment', updateComment)
 app.delete('/deleteComment', deleteComment)
 

@@ -75,10 +75,9 @@ exports.deleteComment = (req, res) => {
 }
 
 exports.getCommentsByGraffiti = (req, res) => {
-    admin
-    .firestore()
+    db
     .collection('comentarios')
-    .where('graffiti', '==', req.body.graffiti)
+    .where('graffiti', '==', req.params.graffitiId)
     .get()
     .then((data) => {
       let comments = [];
