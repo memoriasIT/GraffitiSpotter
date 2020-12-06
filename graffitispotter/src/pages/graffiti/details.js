@@ -18,7 +18,7 @@ class graffiti extends Component {
                 })
                 .catch(err => console.log(err));
             }).catch(err => console.log(err));
-        axios.get('/commentsByGraffiti/${id}')
+        axios.get(`/commentsByGraffiti/${id}`)
            .then(res => {
             console.log(res.data)
             this.setState({
