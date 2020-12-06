@@ -1,36 +1,120 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import Grid from '@material-ui/core/Grid';
-import GraffitiDetails from '../../components/graffiti/GraffitiDetails';
+import { Redirect } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 class graffiti extends Component {
-    state = {
-        graffiti: null
+    constructor(props){
+        super(props);
+        this.state = {
+            id: null,
+            commentCount: 0,
+            descripcion: null,
+            estado: null,
+            imagen: null,
+            likeCount: 0,
+            localizacion: {
+                _latitude: 0,
+                _longitude: 0
+            },
+            tematica: null,
+            titulo: null,
+            redirect: null
+        }
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    componentDidMount(){
-        const id = this.props.match.params.id;
-        axios.get(`/graffitis/${id}`)
-            .then(res => {
-                console.log(res.data)
-                this.setState({
-                    graffiti: res.data
-                })
-                .catch(err => console.log(err));
-            }).catch(err => console.log(err));
+    
+    handleSubmit(event) {
+        const cookies = new Cookies();
+        var Bearer = 'Bearer ' + cookies.get('access-token');
+        console.log(this.state);
+        axios.post('/createGraffiti', this.state, { headers: 
+            { 
+            'Authorization': Bearer
+            }
+        })
+        .then(res => {
+            console.log(res.data)
+            this.setState({
+                id: res.data.graffitiId,
+                redirect: true    
+            });
+        })
+        .catch(err => console.log(err));
+        event.preventDefault();
 
     }
+    renderRedirect = () => {
+        if(this.state.redirect){
+            return <Redirect to={`/graffitis/${this.state.id}`} />
+        }
+    }
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value    
+        });
+    }
+
     render(){
-        let GraffitiMarkup = this.state.graffiti ? (
-                <GraffitiDetails graffiti={this.state.graffiti} />
-            ) : <p>Loading...</p>
-
+        let Formulario = (
+                <form onSubmit={this.handleSubmit}>
+                    <label><br />
+                        Título:<br />
+                        <input name="titulo" type="text"
+                            checked={this.state.titulo}
+                            onChange={this.handleInputChange} />
+                    </label>
+                    <label><br />
+                        Estado:<br />
+                        <input name="estado" type="text"
+                            checked={this.state.estado}
+                            onChange={this.handleInputChange} />
+                    </label>
+                    <label><br />
+                        Descripción:<br />
+                        <input name="descripcion" type="text"
+                            checked={this.state.descripcion}
+                            onChange={this.handleInputChange} />
+                    </label>
+                    <label><br />
+                        Imagen:<br />
+                        <input name="imagen" type="text"
+                            checked={this.state.imagen}
+                            onChange={this.handleInputChange} />
+                    </label>
+                    <label><br />
+                        Localización (Latitud):<br />
+                        <input name="localizacion._latitude" type="text"
+                            checked={this.state.localizacion._latitude}
+                            onChange={this.handleInputChange} />
+                    </label>
+                    <label><br />
+                        Localización (Longitud):<br />
+                        <input name="localizacion._longitude" type="text"
+                            checked={this.state.localizacion._longitude}
+                            onChange={this.handleInputChange} />
+                    </label>
+                    <label><br />
+                        Temática:<br />
+                        <input name="tematica" type="text"
+                            checked={this.state.tematica}
+                            onChange={this.handleInputChange} />
+                    </label>
+                    <br />
+                 <input type="submit" value="Enviar" />
+                </form>
+            )
         return (
-            <Grid container spaceing={16}>
-                <Grid item sm={8} xs={12}> 
-                    {GraffitiMarkup}
-                </Grid>
-            </Grid>
-
+        <React.Fragment>
+            <div>
+            {Formulario}
+            {this.renderRedirect()}
+            </div>
+        </React.Fragment>
         )
     }
 

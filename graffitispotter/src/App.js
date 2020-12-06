@@ -55,7 +55,7 @@ function App() {
                 <Route exact path="/updateUser" component={updateUser} /> // TODO THIS PAGE
                 <Route exact path="/map" component={map} />
                 <Route exact path="/graffitis/:id" component={graffiti} />
-                <Route exact path="/graffitis/create" component={createGraffiti} />
+                <Route exact path="/create" component={createGraffiti} />
                 <Route exact path="/graffitis/delete/:id" component={deleteGraffiti} />
                 <Route exact path="/graffitis/edit/:id" component={editGraffiti} />
               </Switch>

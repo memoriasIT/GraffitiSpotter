@@ -4,7 +4,7 @@ exports.getAllGraffitis = (req, res) => {
     admin
     .firestore()
     .collection('graffitis')
-    .orderBy('fecha')
+    .orderBy('fecha', 'desc')
     .get()
     .then((data) => {
       let graffitis = [];
@@ -69,7 +69,7 @@ exports.postGraffiti = (req, res) => {
       commentCount: req.body.commentCount,
       descripcion: req.body.descripcion,
       estado: req.body.estado,
-      fecha: new Date().toISOString,
+      fecha: new Date().toISOString(),
       imagen: req.body.imagen,
       likeCount: req.body.likeCount,
       localizacion: req.body.localizacion,
@@ -80,8 +80,9 @@ exports.postGraffiti = (req, res) => {
     // Add a document to the collection, use object newGraffiti
     db.collection('graffitis').add(newGraffiti)
     .then (doc => {
-       res.json({message: 'Graffiti created successfully'});
-       return res;
+      //res.json({message: 'Graffiti created successfully'});
+      res.json({graffitiId: doc.id});
+      return res;
     })
     .catch(err => {
       res.status(500).json({error: 'Something went wrong'});

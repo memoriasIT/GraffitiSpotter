@@ -44,6 +44,7 @@ class graffiti extends Component {
 
     }
     handleSubmit(event) {
+        console.log(this.state);
         axios.put('/updateGraffiti', this.state)
         .then(res => {
             console.log(res.data)

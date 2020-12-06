@@ -1,36 +1,63 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import Grid from '@material-ui/core/Grid';
-import GraffitiDetails from '../../components/graffiti/GraffitiDetails';
+import { Redirect } from 'react-router-dom';
 
 class graffiti extends Component {
-    state = {
-        graffiti: null
+    constructor(props){
+        super(props);
+        this.state = {
+            id: null,
+            redirect: null,
+            deleted: null
+        }
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleRedirectGraffiti = this.handleRedirectGraffiti.bind(this);
     }
+    
     componentDidMount(){
-        const id = this.props.match.params.id;
-        axios.get(`/graffitis/${id}`)
-            .then(res => {
-                console.log(res.data)
-                this.setState({
-                    graffiti: res.data
-                })
-                .catch(err => console.log(err));
-            }).catch(err => console.log(err));
+        this.setState({
+            id: this.props.match.params.id 
+        });
+    }
+    handleDelete() {
+        let graffitiId = this.state.id;
+        console.log(this.state.id);
+        axios.delete('/deleteGraffiti', {data: {id: graffitiId} })
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err => console.log(err));
+        this.setState({
+            deleted: true    
+        });
 
     }
+    renderRedirect = () => {
+        if(this.state.redirect){
+            return <Redirect to={`/graffitis/${this.state.id}`} />
+        } else if (this.state.deleted) {
+            return <Redirect to={`/`} />
+        }
+    }
+
+    handleRedirectGraffiti() {
+        this.setState({
+            redirect: true    
+        });
+    }
+
     render(){
-        let GraffitiMarkup = this.state.graffiti ? (
-                <GraffitiDetails graffiti={this.state.graffiti} />
-            ) : <p>Loading...</p>
-
         return (
-            <Grid container spaceing={16}>
-                <Grid item sm={8} xs={12}> 
-                    {GraffitiMarkup}
-                </Grid>
-            </Grid>
-
+        <React.Fragment>
+            <p>¿Estás seguro de que deseas borrar este graffiti?</p>
+            <form onSubmit={this.handleRedirectGraffiti}>
+                <input type="submit" value="No, este graffiti mola" />
+            </form>
+            <form onSubmit={this.handleDelete}>
+                <input type="submit" value="Eliminar definitivamente" />
+            </form>
+            {this.renderRedirect()}
+        </React.Fragment>
         )
     }
 

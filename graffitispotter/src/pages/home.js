@@ -50,6 +50,8 @@ class home extends Component {
                 <br></br>
                 <Link to='/deleteUser'>deleteUser</Link>
                 <br></br>
+                <Link to='/create'>Subir un nuevo graffiti</Link>
+                <br></br>
                 <Link to='/map'>Mapa que muestra el contenedor de papel más cercano</Link>
                 // TODO UPDATE USER PAGE
             <Grid container spaceing={16}>
