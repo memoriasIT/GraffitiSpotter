@@ -28,8 +28,8 @@ exports.getComments = (req, res) => {
 exports.createComment = (req, res) => {
     // Take data from request body
     const newComment = {
-      usuario: req.body.usuario,
-      graffiti: req.body.graffiti,
+      usuario: req.body.username,
+      graffiti: req.body.graffiti.id,
       comentario: req.body.comentario,
     }
     db.collection('comentarios').doc().set(newComment)
