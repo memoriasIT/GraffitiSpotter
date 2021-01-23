@@ -69,7 +69,8 @@ class Graffiti extends Component {
                 descripcion,
                 estado,
                 tematica,
-                localizacion,
+                latitud,
+                longitud,
                 commentCount,
                 autor
             }

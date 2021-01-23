@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 class graffiti extends Component {
     constructor(props){
@@ -13,7 +14,8 @@ class graffiti extends Component {
             estado: null,
             imagen: null,
             likeCount: null,
-            localizacion: null,
+            latitud: null,
+            longitud: null,
             tematica: null,
             titulo: null,
             redirect: null
@@ -35,7 +37,8 @@ class graffiti extends Component {
                     descripcion: res.data.descripcion,
                     estado: res.data.estado,
                     tematica: res.data.tematica,
-                    localizacion: res.data.localizacion,
+                    latitud: res.data.latitud,
+                    longitud: res.data.longitud,
                     commentCount: res.data.commentCount,
                     autor: res.data.autor
                 })
@@ -44,8 +47,14 @@ class graffiti extends Component {
 
     }
     handleSubmit(event) {
+        const cookies = new Cookies();
+        var Bearer = 'Bearer ' + cookies.get('access-token');
         console.log(this.state);
-        axios.put('/updateGraffiti', this.state)
+        axios.put('/updateGraffiti', this.state, { headers:
+            {
+            'Authorization': Bearer
+            }
+        })
         .then(res => {
             console.log(res.data)
         })
@@ -103,16 +112,16 @@ class graffiti extends Component {
                     </label>
                     <label><br />
                         Localización (Latitud):<br />
-                        <input name="localizacion._latitude" type="text"
-                            value={this.state.localizacion._latitude}
-                            checked={this.state.localizacion._latitude}
+                        <input name="latitud" type="text"
+                            value={this.state.latitud}
+                            checked={this.state.latitud}
                             onChange={this.handleInputChange} />
                     </label>
                     <label><br />
                         Localización (Longitud):<br />
-                        <input name="localizacion._longitude" type="text"
-                            value={this.state.localizacion._longitude}
-                            checked={this.state.localizacion._longitude}
+                        <input name="longitud" type="text"
+                            value={this.state.longitud}
+                            checked={this.state.longitud}
                             onChange={this.handleInputChange} />
                     </label>
                     <label><br />

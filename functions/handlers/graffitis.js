@@ -20,7 +20,8 @@ exports.getAllGraffitis = (req, res) => {
           fecha: doc.data().fecha,
           imagen: doc.data().imagen,
           likeCount: doc.data().likeCount,
-          localizacion: doc.data().localizacion,
+          latitud: doc.data().latitud,
+          longitud: doc.data().longitud,
           tematica: doc.data().tematica,
           titulo: doc.data().titulo,
         });
@@ -49,7 +50,8 @@ exports.getGraffiti = (req, res) => {
           fecha: doc.data().fecha,
           imagen: doc.data().imagen,
           likeCount: doc.data().likeCount,
-          localizacion: doc.data().localizacion,
+          latitud: doc.data().latitud,
+          longitud: doc.data().longitud,
           tematica: doc.data().tematica,
           titulo: doc.data().titulo,
         }
@@ -72,7 +74,8 @@ exports.postGraffiti = (req, res) => {
       fecha: new Date().toISOString(),
       imagen: req.body.imagen,
       likeCount: req.body.likeCount,
-      localizacion: req.body.localizacion,
+      latitud: req.body.latitud,
+      longitud: req.body.longitud,
       tematica: req.body.tematica,
       titulo: req.body.titulo,
     }
@@ -101,7 +104,8 @@ exports.updateGraffiti =  (req, res) => {
     //fecha: req.body.fecha,
     imagen: req.body.imagen,
     likeCount: req.body.likeCount,
-    localizacion: req.body.localizacion,
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
     tematica: req.body.tematica,
     titulo: req.body.titulo,
   }

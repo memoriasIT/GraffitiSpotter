@@ -13,10 +13,8 @@ class graffiti extends Component {
             estado: null,
             imagen: null,
             likeCount: 0,
-            localizacion: {
-                _latitude: 0,
-                _longitude: 0
-            },
+            latitud: 0,
+            longitud: 0,
             tematica: null,
             titulo: null,
             redirect: null
@@ -88,14 +86,14 @@ class graffiti extends Component {
                     </label>
                     <label><br />
                         Localización (Latitud):<br />
-                        <input name="localizacion._latitude" type="text"
-                            checked={this.state.localizacion._latitude}
+                        <input name="latitud" type="text"
+                            checked={this.state.latitud}
                             onChange={this.handleInputChange} />
                     </label>
                     <label><br />
                         Localización (Longitud):<br />
-                        <input name="localizacion._longitude" type="text"
-                            checked={this.state.localizacion._longitude}
+                        <input name="longitud" type="text"
+                            checked={this.state.longitud}
                             onChange={this.handleInputChange} />
                     </label>
                     <label><br />

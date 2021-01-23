@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 class graffiti extends Component {
     constructor(props){
@@ -20,9 +21,18 @@ class graffiti extends Component {
         });
     }
     handleDelete() {
+        const cookies = new Cookies();
+        var Bearer = 'Bearer ' + cookies.get('access-token');
         let graffitiId = this.state.id;
         console.log(this.state.id);
-        axios.delete('/deleteGraffiti', {data: {id: graffitiId} })
+        axios.delete('/deleteGraffiti', {
+            headers: {
+                'Authorization': Bearer
+            },
+            data: {
+                id: graffitiId
+            } 
+        })
         .then(res => {
             console.log(res.data)
         })

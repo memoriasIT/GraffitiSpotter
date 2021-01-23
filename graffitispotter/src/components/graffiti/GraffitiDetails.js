@@ -37,7 +37,8 @@ class GraffitiDetails extends Component {
                 descripcion,
                 estado,
                 tematica,
-                localizacion,
+                latitud,
+                longitud,
                 commentCount,
                 autor
             }
@@ -65,7 +66,7 @@ class GraffitiDetails extends Component {
             <br></br>
             Temática: {tematica}
             <br></br>
-            Localización: ({localizacion._latitude}, {localizacion._longitude})
+            Localización: ({latitud}, {longitud})
         </React.Fragment>
         )
     }
