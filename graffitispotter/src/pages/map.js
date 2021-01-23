@@ -17,16 +17,40 @@ const Mapa = () => {
   const [puntos, setPuntos] = useState([]);
   const [info, setInfo] = useState([]);
 
+  
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function(pos){
       setCurrent({lat: pos.coords.latitude, lng: pos.coords.longitude});
       var posiA25830 = proj4('EPSG:4326', 'EPSG:25830', [pos.coords.longitude, pos.coords.latitude])//Pasa la localización del usuario de EPGS4326 A 25830 (CON LO QUE TRABAJA EL JSON)
-      axios.get('http://localhost:5000/thegraffitispotter/us-central1/api/container', {
+    axios.get('/container', {
         params:{
           "lat": posiA25830[0],//  4061985.986 this.state.userLat, 
           "lon": posiA25830[1], // pos.coords.longitude  369689.949, this.state.userLon, 
         },
       })
+    
+    /*
+    axios.get('/containers', data,{
+      "headers":{
+        "content-type": "application/json", 
+      },
+    })*/
+/*
+      axios.post('/container', {
+
+          "lat": posiA25830[0],//  4061985.986 this.state.userLat, 
+          "lon": posiA25830[1] // pos.coords.longitude  369689.949, this.state.userLon, 
+
+      })*/
+      
+      /*
+      axios({
+        method: 'post',
+        url: '/container',
+        data: data
+        
+      })*/
       .then((res) => {
         setPuntos([proj4('EPSG:25830', 'EPSG:4326', [res.data[0].location.lon, res.data[0].location.lat]).reverse()])
         setInfo([res.data[0].id, res.data[0].recogida])

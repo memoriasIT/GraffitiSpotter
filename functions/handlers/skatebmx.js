@@ -30,21 +30,32 @@ exports.skatebmx = (request, response) => {
           let result = dataTransform.transform();
   
           //Find the parks that satisfy the condition of distance
-          function findItems(array) {
+          function findItem(array) {
+            var temp;
             var aux = [];
             for (var i = 0; i < array.length; i++) {
+              
               var x = array[i].location.lon;
               var y = array[i].location.lat;
-              let distancia = Math.sqrt(Math.pow((request.body.lat - x), 2) + Math.pow((request.body.lon - y), 2));
-               if (distancia <= request.body.meters) {
-                   aux.push(array[i]);
-               }
+              let distancia = Math.sqrt(Math.pow((request.query.lat - x), 2) + Math.pow((request.query.lon - y), 2));
+  
+              if(i === 0){
+                temp = distancia;
+                aux.push(array[i]);
+              }else{
+                if (temp > distancia) {
+                  temp = distancia;
+                  aux = [];
+                  aux.push(array[i]);
+                }
+               
+              }
             }
             return(aux);
         }
         
        
-        return response.json(findItems(result));
+        return response.json(findItem(result));
   
         })
         .catch(err => {

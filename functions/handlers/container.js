@@ -29,7 +29,8 @@ exports.container = (request, response) => {
         let dataTransform = DataTransform(dbInMemory, containerMap);
         let result = dataTransform.transform();
 
-        //console.log("lat:: " +  request.query.lat)
+        console.log("lat:: " +  request.query.lat); //body
+        console.log("lon:: " +  request.query.lon);
         
         //Find the container with the closest position to the given coordinates
         function findItem(array) {
