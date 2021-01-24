@@ -91,8 +91,8 @@ export default function Navbar() {
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem ><Link  to={{pathname: '/home'}}>Logout</Link></MenuItem>
+                    <MenuItem onClick={handleClose}><Link to='/userDetails'>User Details</Link></MenuItem>
+                    <MenuItem ><Link  to={{pathname: '/logout'}}>Logout</Link></MenuItem>
                 </Menu>
                 </div>
             )}

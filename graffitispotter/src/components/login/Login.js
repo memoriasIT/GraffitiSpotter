@@ -78,9 +78,10 @@ class Login extends Component {
             // No errors found, login
             axios(loginConfig)
                 .then(function (response) {
-                    console.log(JSON.stringify(response.data));
+                    // console.log(JSON.stringify(response.data));
                     const cookies = new Cookies();
                     cookies.set('access-token', response.data.token, {'path' : '/', sameSite : true});
+                    cookies.set('user', formData.email, {'path' : '/', sameSite : true});
                 })
                 .catch(function (error) {
                 console.log(error);

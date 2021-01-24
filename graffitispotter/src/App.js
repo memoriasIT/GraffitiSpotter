@@ -10,7 +10,8 @@ import Container from '@material-ui/core/Container';
 import home from './pages/home';
 import LoginPage from './pages/Login';
 import SignupPage from './pages/signup';
-import UserDetails from './pages/user';
+import UserPage from './pages/user';
+import UserDetails from './pages/userDetails';
 import deleteUser from './pages/deleteUser';
 import updateUser from './pages/updateUser';
 import ListOfUsers from './components/listOfUsers/ListOfUsers';
@@ -50,7 +51,8 @@ function App() {
                 <Route exact path="/login" component={LoginPage} />
                 <Route exact path="/signup" component={SignupPage} />
                 <Route exact path="/listOfUsers" component={ListOfUsers} />
-                <Route exact path="/user" component={UserDetails} />
+                <Route exact path="/user" component={UserPage} />
+                <Route exact path="/userDetails" component={UserDetails} />
                 <Route exact path="/deleteUser" component={deleteUser} />
                 <Route exact path="/updateUser" component={updateUser} /> // TODO THIS PAGE
                 <Route exact path="/map" component={map} />

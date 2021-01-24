@@ -17,6 +17,7 @@ const {
   listUsers,
   updateUser,
   deleteUser,
+  mydetails,
   } = require('./handlers/usuarios');
 
 const {
@@ -58,6 +59,7 @@ app.post('/login', login);
 app.get('/users', AuthenticationMiddleware, listUsers);
 app.put('/updateUser', AuthenticationMiddleware, updateUser);
 app.get('/user', AuthenticationMiddleware, getDetailsOfUser);
+app.get('/userDetails', AuthenticationMiddleware, mydetails);
 app.delete('/deleteUser', AuthenticationMiddleware, deleteUser);
 
 

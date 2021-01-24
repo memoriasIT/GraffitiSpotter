@@ -126,10 +126,9 @@ exports.login = (req, res) => {
       });
   }
 
-
-exports.getDetailsOfUser = (req, res) => {
+  exports.mydetails = (req, res) => {
     let userData = {};
-    console.log(req.user);
+
     db.doc(`/usuarios/${req.user.username}`)
       .get()
       .then((doc) => {
@@ -142,7 +141,42 @@ exports.getDetailsOfUser = (req, res) => {
             .get();
         } else {
           // Bad request - User does not exist
-          return res.status(400).json({ username: 'This username does nto exists' });
+          return res.status(400).json({ username: 'Your username does not exists' });
+        }
+      })
+      // Add graffitis of the user to a list
+      .then((data) => {
+        userData.graffitis = [];
+        data.forEach((doc) => {
+          userData.graffitis.push(doc.data());
+        });
+        return res.json(userData);
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({ error: err.code });
+      });
+  };
+
+
+exports.getDetailsOfUser = (req, res) => {
+    let userData = {};
+    console.log(req.user);
+    console.log(req.user.username);
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    db.doc(`/usuarios/${req.user.username}`)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          userData.credentials = doc.data();
+          // Get all graffitis of the user
+          return db
+            .collection('graffitis')
+            .where('autor', '==', req.user.username)
+            .get();
+        } else {
+          // Bad request - User does not exist
+          return res.status(400).json({ username: 'This username does not exists' });
         }
       })
       // Add graffitis of the user to a list

@@ -19,14 +19,21 @@ module.exports = (req, res, next) => {
       .then((decodedToken) => {
         req.user = decodedToken;
         console.log(decodedToken);
-        return db
+        var data = db
           .collection('usuarios')
           .where('userId', '==', req.user.uid)
           .limit(1)
           .get();
+        
+        // console.log(data);
+        return data;
+
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
+        // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        // console.log(data.docs)
+
         req.user.username = data.docs[0].data().username;
         return next();
       })
