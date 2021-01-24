@@ -83,6 +83,9 @@ class Register extends Component {
                     console.log(JSON.stringify(response.data));
                     const cookies = new Cookies();
                     cookies.set('access-token', response.data.token, {'path' : '/'});
+                    cookies.set('user', formData.email, {'path' : '/', sameSite : true});
+
+                    window.location.href = `${window.location.origin.toString()}`;
                 })
                 .catch(function (error) {
                 console.log(error);
