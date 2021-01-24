@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 // Pages
 import home from './pages/home';
 import LoginPage from './pages/Login';
+import LogoutPage from './pages/Logout';
 import SignupPage from './pages/signup';
 import UserPage from './pages/user';
 import UserDetails from './pages/userDetails';
@@ -49,6 +50,7 @@ function App() {
               <Switch>
                 <Route exact path="/" component={home} />
                 <Route exact path="/login" component={LoginPage} />
+                <Route exact path="/logout" component={LogoutPage} />
                 <Route exact path="/signup" component={SignupPage} />
                 <Route exact path="/listOfUsers" component={ListOfUsers} />
                 <Route exact path="/user" component={UserPage} />

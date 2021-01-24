@@ -39,7 +39,7 @@ class home extends Component {
             )) : <p>Loading...</p>
         return (
             <div>
-                <h1>Home Page</h1>
+                <h1>Inicio</h1>
                 <Link to='/login'>login</Link>
                 <br></br>
                 <Link to='/signup'>register</Link>
