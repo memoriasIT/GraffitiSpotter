@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import { Row, FormGroup, FormControl, ControlLabel, Button, HelpBlock } from 'react-bootstrap';
-import { isEmail, isEmpty, isLength, isContainWhiteSpace } from '../shared/validator';
+import {  isEmpty} from '../shared/validator';
 import Cookies from 'universal-cookie';
-import { Link } from 'react-router-dom';
 
 
 class Register extends Component {
