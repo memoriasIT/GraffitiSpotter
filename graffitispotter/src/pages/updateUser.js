@@ -71,7 +71,7 @@ class updateUser extends Component {
 
     var config = {
         method: 'get',
-        url: 'http://localhost:5000/thegraffitispotter/us-central1/api/user/',
+        url: 'https://us-central1-thegraffitispotter.cloudfunctions.net/api/user/',
         headers: { 
             'Content-Type': 'application/json',
             'Accept':'application/json',
@@ -128,7 +128,7 @@ class updateUser extends Component {
 
     var config = {
       method: 'put',
-      url: 'http://localhost:5000/thegraffitispotter/us-central1/api/updateUser',
+      url: 'https://us-central1-thegraffitispotter.cloudfunctions.net/api/updateUser',
         headers: { 
           'Authorization': Bearer, 
           'Content-Type': 'application/json',

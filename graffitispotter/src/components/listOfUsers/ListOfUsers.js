@@ -19,7 +19,7 @@ class ListOfUsers extends Component {
 
     var config = {
     method: 'get',
-        url: 'http://localhost:5000/thegraffitispotter/us-central1/api/users',
+        url: 'https://us-central1-thegraffitispotter.cloudfunctions.net/api/users',
         headers: { 
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept':'application/json',

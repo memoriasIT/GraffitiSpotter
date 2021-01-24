@@ -29,7 +29,7 @@ class deleteUser extends Component {
 
     var config = {
         method: 'delete',
-        url: 'http://localhost:5000/thegraffitispotter/us-central1/api/deleteUser',
+        url: 'https://us-central1-thegraffitispotter.cloudfunctions.net/api/deleteUser',
         headers: { 
           'Authorization': Bearer, 
           'Content-Type': 'application/json',

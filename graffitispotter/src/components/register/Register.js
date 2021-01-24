@@ -64,7 +64,7 @@ class Register extends Component {
 
         var registerConfig = {
             method: 'post',
-            url: 'http://localhost:5000/thegraffitispotter/us-central1/api/signup',
+            url: 'https://us-central1-thegraffitispotter.cloudfunctions.net/api/signup',
             headers: { 
               'Content-Type': 'application/json'
             },
