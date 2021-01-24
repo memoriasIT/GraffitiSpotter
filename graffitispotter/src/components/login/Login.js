@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import {Redirect} from 'react-router-dom';
 import { Row, FormGroup, FormControl, ControlLabel, Button, HelpBlock } from 'react-bootstrap';
 import { isEmail, isEmpty, isLength, isContainWhiteSpace } from '../shared/validator';
 import Cookies from 'universal-cookie';
@@ -79,10 +80,12 @@ class Login extends Component {
                 .then(function (response) {
                     console.log(JSON.stringify(response.data));
                     const cookies = new Cookies();
-                    cookies.set('access-token', response.data.token, {'path' : '/'});
+                    cookies.set('access-token', response.data.token, {'path' : '/', sameSite : true});
                 })
                 .catch(function (error) {
                 console.log(error);
+                }).then(() => {
+                    return  <Redirect  to="/posts/" />
                 });
 
         } else {

@@ -27,7 +27,7 @@ class UserDetails extends Component {
 
     var config = {
         method: 'get',
-        url: 'http://localhost:5000/thegraffitispotter/us-central1/api/user/',
+        url: 'https://us-central1-thegraffitispotter.cloudfunctions.net/api/user/',
         headers: { 
             'Content-Type': 'application/json',
             'Accept':'application/json',
