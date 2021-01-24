@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import { Row, FormGroup, FormControl, ControlLabel, Button, HelpBlock } from 'react-bootstrap';
@@ -14,11 +14,17 @@ class Login extends Component {
 
         this.state = {
             formData: {}, // Contains login form data
+            isSignedUp: false,
             errors: {}, // Contains login field errors
             formSubmitted: false, // Indicates submit status of login form
             loading: false // Indicates in progress state of login form
         }
+
+        
     }
+
+
+        
 
     handleInputChange = (event) => {
         const target = event.target;
@@ -82,12 +88,12 @@ class Login extends Component {
                     const cookies = new Cookies();
                     cookies.set('access-token', response.data.token, {'path' : '/', sameSite : true});
                     cookies.set('user', formData.email, {'path' : '/', sameSite : true});
+
+                    window.location.href = `${window.location.origin.toString()}`;
                 })
                 .catch(function (error) {
                 console.log(error);
-                }).then(() => {
-                    return  <Redirect  to="/posts/" />
-                });
+                })
 
         } else {
             this.setState({
@@ -98,6 +104,14 @@ class Login extends Component {
     }
 
     render() {
+    
+
+
+        if (this.state.isSignedUp) {
+            // redirect to home if signed up
+            console.log("testing");
+            return <Redirect to = {{ pathname: "/" }} />;
+        }
 
         const { errors, formSubmitted } = this.state;
 

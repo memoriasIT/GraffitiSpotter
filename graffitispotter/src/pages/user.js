@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import Grid from '@material-ui/core/Grid';
+import Graffiti from "../components/graffiti/Graffiti";
 
 class UserDetails extends Component {
     constructor(props) {
@@ -68,7 +70,32 @@ class UserDetails extends Component {
             {/* // <h3>Se puede ver más info en la consola, esta página requiere login/registro y accesstoken mediante la cookie 'access-token'</h3> */}
          {this.state.isLoaded ? 
             
-            <div><pre>{JSON.stringify(details, null, 2) }</pre></div>
+            <div>
+                <h1>Usuario</h1>
+                {details.credentials['username']}
+
+                <h1>Biografía</h1>
+                {details.credentials['biografia']}
+
+                <h1>Edad</h1>
+                {details.credentials['edad']}
+
+                <h1>Nombre</h1>
+                {details.credentials['nombre']}
+
+                <h1>Tus Graffitis</h1>
+                <Grid container spaceing={16}>
+                    <Grid item sm={8} xs={12}> 
+                        {details.graffitis.map((graffiti) => 
+                            <Graffiti key={graffiti.id} graffiti={graffiti}/> 
+                            //<p>{graffiti.titulo}</p>
+                        )}
+                    </Grid>
+                </Grid>
+                {/* <pre>{JSON.stringify(details, null, 2) }</pre> */}
+                
+                
+            </div>
                 
             
              : "Inserta username (ej. PedroJuan141)..." }

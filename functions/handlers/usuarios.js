@@ -161,10 +161,10 @@ exports.login = (req, res) => {
 
 exports.getDetailsOfUser = (req, res) => {
     let userData = {};
-    console.log(req.user);
-    console.log(req.user.username);
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    db.doc(`/usuarios/${req.user.username}`)
+    var data = req.body;
+    console.log(data.username);      // your JSON
+    console.log(req.body);      // your JSON
+    db.doc(`/usuarios/${data.username}`)
       .get()
       .then((doc) => {
         if (doc.exists) {
@@ -172,7 +172,7 @@ exports.getDetailsOfUser = (req, res) => {
           // Get all graffitis of the user
           return db
             .collection('graffitis')
-            .where('autor', '==', req.user.username)
+            .where('autor', '==', data.username)
             .get();
         } else {
           // Bad request - User does not exist

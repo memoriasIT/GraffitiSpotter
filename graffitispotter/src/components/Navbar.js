@@ -99,14 +99,24 @@ export default function Navbar() {
                 </NavLink>
             </Typography>
 
-            { !(typeof Bearer !== 'undefined'  || Bearer === null) && (<MenuItem >
+            { !(typeof Bearer !== 'undefined'  || Bearer === null) && (<div><MenuItem >
                 <Typography variant="h6" className={classes.title}><NavLink
                 className="tags"
                 style={{ color: 'white' }}
                 to={{pathname: '/login'}}>
                 Login
                 </NavLink>
-                </Typography></MenuItem>)}
+                </Typography></MenuItem>
+                
+                
+                <MenuItem >
+                <Typography variant="h6" className={classes.title}><NavLink
+                className="tags"
+                style={{ color: 'white' }}
+                to={{pathname: '/signup'}}>
+                Register
+                </NavLink>
+                </Typography></MenuItem></div>)}
             {(typeof Bearer !== 'undefined'  || Bearer === null) && (
                 <div>
                 <IconButton

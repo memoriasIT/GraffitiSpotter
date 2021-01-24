@@ -46,7 +46,7 @@ class ListOfUsers extends Component {
     const { isLoaded, users } = this.state;
       return (
         <React.Fragment>
-            <h3>Se puede ver más info en la consola, esta página requiere login/registro y accesstoken mediante la cookie 'access-token'</h3>
+            
         {isLoaded ? 
             
                 <ul className="list-group">
@@ -57,7 +57,8 @@ class ListOfUsers extends Component {
                 ))}
                 </ul>
             
-             : "Cargando..." }
+             : <div><h3>Esta página requiere login/registro.</h3><br></br><p>Cargando datos si es posible...</p></div>}
+             
         </React.Fragment>
       );
   }

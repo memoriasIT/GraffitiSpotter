@@ -60,6 +60,12 @@ app.get('/users', AuthenticationMiddleware, listUsers);
 app.put('/updateUser', AuthenticationMiddleware, updateUser);
 app.get('/user', AuthenticationMiddleware, getDetailsOfUser);
 app.get('/userDetails', AuthenticationMiddleware, mydetails);
+
+
+// app.post('/user', function(request, response){
+
+// });
+
 app.delete('/deleteUser', AuthenticationMiddleware, deleteUser);
 
 

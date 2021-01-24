@@ -36,6 +36,7 @@ class Logout extends Component {
         const cookies = new Cookies();
         cookies.remove("access-token");
         cookies.remove("user");
+        window.location.href = `${window.location.origin.toString()}`;
     }
 
     render() {

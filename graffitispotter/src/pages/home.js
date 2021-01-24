@@ -40,20 +40,20 @@ class home extends Component {
         return (
             <div>
                 <h1>Inicio</h1>
-                <Link to='/login'>login</Link>
+                {/* <Link to='/login'>login</Link>
                 <br></br>
                 <Link to='/signup'>register</Link>
+                <br></br> */}
+                <Link to='/listOfUsers'>Lista de Usuarios</Link>
                 <br></br>
-                <Link to='/listOfUsers'>list Of Users</Link>
+                <Link to='/user'>Buscar detalles de un usuario</Link>
                 <br></br>
-                <Link to='/user'>User Details</Link>
-                <br></br>
-                <Link to='/deleteUser'>deleteUser</Link>
+                <Link to='/deleteUser'>Borrar Usuario</Link>
                 <br></br>
                 <Link to='/create'>Subir un nuevo graffiti</Link>
                 <br></br>
                 <Link to='/map'>Mapa que muestra el contenedor de papel más cercano</Link>
-                // TODO UPDATE USER PAGE
+                {/* // TODO UPDATE USER PAGE */}
             <Grid container spaceing={16}>
                 <Grid item sm={8} xs={12}> 
                     {recentGraffitisMarkup}
