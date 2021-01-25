@@ -12,8 +12,8 @@ exports.getComments = (req, res) => {
         comments.push({
           commentId: doc.id,
           body: doc.data().body,
-          usuario: doc.data().usuario.id,
-          graffiti: doc.data().graffiti.id,
+          usuario: doc.data().usuario,
+          graffiti: doc.data().graffiti,
           comentario: doc.data().comentario,
         });
       });
@@ -85,8 +85,8 @@ exports.getCommentsByGraffiti = (req, res) => {
         comments.push({
           commentId: doc.id,
           body: doc.data().body,
-          usuario: doc.data().usuario.id,
-          graffiti: doc.data().graffiti.id,
+          usuario: doc.data().usuario,
+          graffiti: doc.data().graffiti,
           comentario: doc.data().comentario,
         });
       });
