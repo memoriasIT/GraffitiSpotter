@@ -33,10 +33,6 @@ class home extends Component {
                 <Graffiti key={graffiti.id} graffiti={graffiti}/> 
                 //<p>{graffiti.titulo}</p>
             )) : <p>Loading...</p>
-        let recentComments = this.state.comments ? (
-            this.state.comments.map((comment) =>
-                <p>{comment.comentario}</p>
-            )) : <p>Loading...</p>
         return (
             <div>
                 <h1>Inicio</h1>
@@ -59,7 +55,6 @@ class home extends Component {
                     {recentGraffitisMarkup}
                 </Grid>
             </Grid>
-                {recentComments}
             </div>
         );
     }
