@@ -72,7 +72,7 @@ class graffiti extends Component {
             ) : <p>Loading...</p>
         let recentComments = this.state.comments ? (
             this.state.comments.map((comment) =>
-                <p>{comment.comentario}</p>
+                <p><b>{comment.username}</b>:{comment.comentario}</p>
             )) : <p>Loading...</p>
         let Formulario = (
                 <form onSubmit={this.handleSubmit}>
