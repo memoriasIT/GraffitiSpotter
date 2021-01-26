@@ -25,7 +25,6 @@ class graffiti extends Component {
     }
     
     handleSubmit(event) {
-
         var FormData = require('form-data');
         var data = new FormData();
         data.append('image', this.file);
@@ -42,7 +41,9 @@ class graffiti extends Component {
           axios(config)
           .then(function (response) {
             console.log(response.data['data']['url']);
-            this.state.imagen = response.data['data']['url'];
+            this.setState({
+                imagen: response.data['data']['url'],
+            });
           })
           .catch(function (error) {
             console.log(error);
