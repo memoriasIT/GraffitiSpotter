@@ -41,7 +41,9 @@ class graffiti extends Component {
           
           axios(config)
           .then(function (response) {
-            console.log(JSON.stringify(response.data));
+            console.log(response.data);
+            console.log(response.data.url);
+            this.state.imagen = response.data.url;
           })
           .catch(function (error) {
             console.log(error);
