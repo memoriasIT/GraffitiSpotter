@@ -26,7 +26,7 @@ class graffiti extends Component {
     
     componentDidMount(){
         const id = this.props.match.params.id;
-        axios.get(`/graffitis/${id}`)
+        axios.get(`https://us-central1-thegraffitispotter.cloudfunctions.net/api/graffitis/${id}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({
@@ -50,7 +50,7 @@ class graffiti extends Component {
         const cookies = new Cookies();
         var Bearer = 'Bearer ' + cookies.get('access-token');
         console.log(this.state);
-        axios.put('/updateGraffiti', this.state, { headers:
+        axios.put('https://us-central1-thegraffitispotter.cloudfunctions.net/api/updateGraffiti', this.state, { headers:
             {
             'Authorization': Bearer
             }

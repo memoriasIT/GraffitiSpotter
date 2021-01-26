@@ -43,7 +43,7 @@ class Graffiti extends Component {
         const id = this.props.graffiti.id;
         var Bearer = 'Bearer ' + cookies.get('access-token');
         
-        axios.get(`/graffiti/${id}/likeGraffiti`, {
+        axios.get(`https://us-central1-thegraffitispotter.cloudfunctions.net/api/graffiti/${id}/likeGraffiti`, {
             headers: {
               'Authorization': Bearer 
             }

@@ -23,7 +23,7 @@ const Mapa = () => {
     navigator.geolocation.getCurrentPosition(function(pos){
       setCurrent({lat: pos.coords.latitude, lng: pos.coords.longitude});
       var posiA25830 = proj4('EPSG:4326', 'EPSG:25830', [pos.coords.longitude, pos.coords.latitude])//Pasa la localización del usuario de EPGS4326 A 25830 (CON LO QUE TRABAJA EL JSON)
-    axios.get('/container', {
+    axios.get('https://us-central1-thegraffitispotter.cloudfunctions.net/api/container', {
         params:{
           "lat": posiA25830[0],//  4061985.986 this.state.userLat, 
           "lon": posiA25830[1], // pos.coords.longitude  369689.949, this.state.userLon, 
@@ -31,13 +31,13 @@ const Mapa = () => {
       })
     
     /*
-    axios.get('/containers', data,{
+    axios.get('https://us-central1-thegraffitispotter.cloudfunctions.net/api/containers', data,{
       "headers":{
         "content-type": "application/json", 
       },
     })*/
 /*
-      axios.post('/container', {
+      axios.post('https://us-central1-thegraffitispotter.cloudfunctions.net/api/container', {
 
           "lat": posiA25830[0],//  4061985.986 this.state.userLat, 
           "lon": posiA25830[1] // pos.coords.longitude  369689.949, this.state.userLon, 
@@ -47,7 +47,7 @@ const Mapa = () => {
       /*
       axios({
         method: 'post',
-        url: '/container',
+        url: 'https://us-central1-thegraffitispotter.cloudfunctions.net/api/container',
         data: data
         
       })*/

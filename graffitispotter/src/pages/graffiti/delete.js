@@ -25,7 +25,7 @@ class graffiti extends Component {
         var Bearer = 'Bearer ' + cookies.get('access-token');
         let graffitiId = this.state.id;
         console.log(this.state.id);
-        axios.delete('/deleteGraffiti', {
+        axios.delete('https://us-central1-thegraffitispotter.cloudfunctions.net/api/deleteGraffiti', {
             headers: {
                 'Authorization': Bearer
             },

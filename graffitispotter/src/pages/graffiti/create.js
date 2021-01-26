@@ -52,7 +52,7 @@ class graffiti extends Component {
         const cookies = new Cookies();
         var Bearer = 'Bearer ' + cookies.get('access-token');
         console.log(this.state);
-        axios.post('/createGraffiti', this.state, { headers: 
+        axios.post('https://us-central1-thegraffitispotter.cloudfunctions.net/api/createGraffiti', this.state, { headers: 
             { 
             'Authorization': Bearer
             }

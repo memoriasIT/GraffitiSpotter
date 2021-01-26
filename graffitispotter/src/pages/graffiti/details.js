@@ -19,7 +19,7 @@ class graffiti extends Component {
         const cookies = new Cookies();
         var Bearer = 'Bearer ' + cookies.get('access-token');
         console.log(this.state);
-        axios.post('/createComment', this.state, { headers:
+        axios.post('https://us-central1-thegraffitispotter.cloudfunctions.net/api/createComment', this.state, { headers:
             {
             'Authorization': Bearer
             }
@@ -48,7 +48,7 @@ class graffiti extends Component {
     }
     componentDidMount(){
         const id = this.props.match.params.id;
-        axios.get(`/graffitis/${id}`)
+        axios.get(`https://us-central1-thegraffitispotter.cloudfunctions.net/api/graffitis/${id}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({
@@ -56,7 +56,7 @@ class graffiti extends Component {
                 })
                 .catch(err => console.log(err));
             }).catch(err => console.log(err));
-        axios.get(`/commentsByGraffiti/${id}`)
+        axios.get(`https://us-central1-thegraffitispotter.cloudfunctions.net/api/commentsByGraffiti/${id}`)
            .then(res => {
             console.log(res.data)
             this.setState({
