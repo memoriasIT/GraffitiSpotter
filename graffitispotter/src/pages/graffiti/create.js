@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-var FormData = require('form-data');
 
 class graffiti extends Component {
     constructor(props){
@@ -27,6 +26,7 @@ class graffiti extends Component {
     
     handleSubmit(event) {
 
+        var FormData = require('form-data');
         var data = new FormData();
         data.append('image', this.file);
 
