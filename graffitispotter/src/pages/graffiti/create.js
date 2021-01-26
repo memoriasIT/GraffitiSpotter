@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
+var FormData = require('form-data');
 
 class graffiti extends Component {
     constructor(props){
         super(props);
+        const [selectedFile, setSelectedFile] = useState(null);
         this.state = {
             id: null,
             commentCount: 0,
@@ -24,6 +26,27 @@ class graffiti extends Component {
     }
     
     handleSubmit(event) {
+
+        var data = new FormData();
+        data.append('image', selectedFile);
+
+        var config = {
+            method: 'post',
+            url: 'https://api.imgbb.com/1/upload?key=4c66bdf18a92b0a41b4e261195b1b1a2',
+            headers: { 
+              ...data.getHeaders()
+            },
+            data : data
+          };
+          
+          axios(config)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
         const cookies = new Cookies();
         var Bearer = 'Bearer ' + cookies.get('access-token');
         console.log(this.state);
@@ -83,6 +106,11 @@ class graffiti extends Component {
                         <input name="imagen" type="text"
                             checked={this.state.imagen}
                             onChange={this.handleInputChange} />
+                        <input
+                            type="file"
+                            value={selectedFile}
+                            onChange={(e) => setSelectedFile(e.target.files[0])}
+                            />
                     </label>
                     <label><br />
                         Localización (Latitud):<br />
