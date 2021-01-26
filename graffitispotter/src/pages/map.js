@@ -76,7 +76,7 @@ const Mapa = () => {
 
   return (
     <div className="App">
-        <MapContainer center={{lat: 36.056464, lng: -4.63546}} zoom={15}>
+        <MapContainer center={{lat: 36.721303, lng: -4.421637}} zoom={15}>
           {current && 
           <ChangeView zoom={15} /> 
           }
