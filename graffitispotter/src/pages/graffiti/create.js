@@ -34,7 +34,7 @@ class graffiti extends Component {
             method: 'post',
             url: 'https://api.imgbb.com/1/upload?key=4c66bdf18a92b0a41b4e261195b1b1a2',
             headers: { 
-              ...data.getHeaders()
+              //...data.getHeaders()
             },
             data : data
           };
