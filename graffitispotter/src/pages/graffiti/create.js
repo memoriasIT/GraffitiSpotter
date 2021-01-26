@@ -7,7 +7,7 @@ var FormData = require('form-data');
 class graffiti extends Component {
     constructor(props){
         super(props);
-        const [selectedFile, setSelectedFile] = useState(null);
+        this.file = null;
         this.state = {
             id: null,
             commentCount: 0,
@@ -28,7 +28,7 @@ class graffiti extends Component {
     handleSubmit(event) {
 
         var data = new FormData();
-        data.append('image', selectedFile);
+        data.append('image', this.file);
 
         var config = {
             method: 'post',
@@ -108,8 +108,8 @@ class graffiti extends Component {
                             onChange={this.handleInputChange} />
                         <input
                             type="file"
-                            value={selectedFile}
-                            onChange={(e) => setSelectedFile(e.target.files[0])}
+                            value={this.file}
+                            onChange={(e) => this.file=e.target.files[0]}
                             />
                     </label>
                     <label><br />
