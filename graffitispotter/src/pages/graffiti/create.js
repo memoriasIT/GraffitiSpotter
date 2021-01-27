@@ -39,32 +39,38 @@ class graffiti extends Component {
           };
           
           axios(config)
-          .then(function (response) {
+          .then((response) => {
             console.log(response.data['data']['url']);
             this.setState({
                 imagen: response.data['data']['url'],
             });
+
+            console.log(this.state.imagen);
+
+            const cookies = new Cookies();
+            var Bearer = 'Bearer ' + cookies.get('access-token');
+            console.log(this.state);
+            axios.post('https://us-central1-thegraffitispotter.cloudfunctions.net/api/createGraffiti', this.state, { headers: 
+                { 
+                'Authorization': Bearer
+                }
+            })
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    id: res.data.graffitiId,
+                    redirect: true    
+                });
+            })
+            .catch(err => console.log(err));
+
+
           })
           .catch(function (error) {
             console.log(error);
           });
 
-        const cookies = new Cookies();
-        var Bearer = 'Bearer ' + cookies.get('access-token');
-        console.log(this.state);
-        axios.post('https://us-central1-thegraffitispotter.cloudfunctions.net/api/createGraffiti', this.state, { headers: 
-            { 
-            'Authorization': Bearer
-            }
-        })
-        .then(res => {
-            console.log(res.data)
-            this.setState({
-                id: res.data.graffitiId,
-                redirect: true    
-            });
-        })
-        .catch(err => console.log(err));
+        
         event.preventDefault();
 
     }
@@ -105,12 +111,12 @@ class graffiti extends Component {
                     </label>
                     <label><br />
                         Imagen:<br />
-                        <input name="imagen" type="text"
+                        {/* <input name="imagen" type="text"
                             checked={this.state.imagen}
-                            onChange={this.handleInputChange} />
+                            onChange={this.handleInputChange} /> */}
                         <input
                             type="file"
-                            value={this.file}
+                            
                             onChange={(e) => this.file=e.target.files[0]}
                             />
                     </label>
